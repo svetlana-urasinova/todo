@@ -2,11 +2,17 @@
   align-items: center;
   display: flex;
   font-size: 12px;
-  justify-content: space-between;
-  padding: 0 var(--padding-small);
+  padding: var(--padding-small);
+
+  &-credits {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
 
   &-signature {
     font-family: "Comforter Brush", cursive;
     font-size: 24px;
+    margin-left: auto;
   }
 }
