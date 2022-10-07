@@ -15,6 +15,7 @@ export enum TaskCaterogy {
   Kitchen = 'kitchen',
   Kidsroom = 'kidsroom',
   Laundry = 'laundry',
+  Garbage = 'garbage',
 }
 
 export enum TaskPeriod {

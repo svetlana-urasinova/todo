@@ -1,0 +1,12 @@
+.footer {
+  align-items: center;
+  display: flex;
+  font-size: 12px;
+  justify-content: space-between;
+  padding: 0 var(--padding-small);
+
+  &-signature {
+    font-family: "Comforter Brush", cursive;
+    font-size: 24px;
+  }
+}

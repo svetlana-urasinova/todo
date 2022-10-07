@@ -1,0 +1,107 @@
+.styled-form-group {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+  width: 100%;
+
+  .styled-form-label {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .styled-form-input,
+  .styled-form-textarea {
+    border: var(--border-basic);
+    border-radius: 6px;
+    color: var(--text);
+    font: normal 16px "Montserrat", sans-serif;
+    outline: none;
+    padding: 8px;
+    width: 100%;
+
+    &:hover {
+      border-color: var(--secondary-light);
+    }
+
+    &:focus {
+      border-color: var(--secondary);
+    }
+
+    &.error {
+      border-color: var(--danger);
+    }
+
+    &::placeholder {
+      color: var(--grey-dark);
+    }
+  }
+
+  .styled-form-textarea {
+    height: 100px;
+  }
+
+  .styled-form-checkbox {
+    &-text {
+      cursor: pointer;
+      display: block;
+      padding-left: 32px;
+      position: relative;
+
+      &:before,
+      &:after {
+        content: "";
+        display: block;
+        left: 0;
+        position: absolute;
+        top: 2px;
+      }
+
+      &:before {
+        --background: var(--white);
+        --border: var(--primary);
+        background-color: var(--background);
+        border: 2px solid var(--border);
+        border-radius: 4px;
+        height: 16px;
+        width: 16px;
+      }
+
+      &::after {
+        height: 12px;
+        left: 4px;
+        top: 7px;
+        width: 12px;
+      }
+    }
+
+    &-input {
+      display: none;
+
+      &:checked + .styled-form-checkbox-text {
+        &:before {
+          --background: var(--primary);
+        }
+
+        &:after {
+          --crossmark: var(--white);
+          background-color: var(--crossmark);
+          mask-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTIyLjg3NyAxMDEuMDUyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAxMjIuODc3IDEwMS4wNTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTQuNDMsNjMuNjNjLTIuODY5LTIuNzU1LTQuMzUyLTYuNDItNC40MjctMTAuMTFjLTAuMDc0LTMuNjg5LDEuMjYxLTcuNDEyLDQuMDE1LTEwLjI4MSBjMi43NTItMi44NjcsNi40MTctNC4zNTEsMTAuMTA2LTQuNDI1YzMuNjkxLTAuMDc2LDcuNDEyLDEuMjU1LDEwLjI4Myw0LjAxMmwyNC43ODcsMjMuODUxTDk4LjU0MywzLjk4OWwxLjc2OCwxLjM0OWwtMS43Ny0xLjM1NSBjMC4xNDEtMC4xODMsMC4zMDEtMC4zMzksMC40NzktMC40NjZjMi45MzYtMi41NDMsNi42MjEtMy42OTEsMTAuMjIzLTMuNDk1VjAuMDE4bDAuMTc2LDAuMDE2YzMuNjIzLDAuMjQsNy4xNjIsMS44NSw5Ljc3NSw0Ljc2NiBjMi42NTgsMi45NjUsMy44NjMsNi43MzEsMy42NjIsMTAuNDEyaDAuMDA0bC0wLjAxNiwwLjE3NmMtMC4yMzYsMy41NTgtMS43OTEsNy4wMzUtNC42MDksOS42MzJsLTU5LjIyNCw3Mi4wOWwwLjAwNCwwLjAwNCBjLTAuMTExLDAuMTQxLTAuMjM2LDAuMjYyLTAuMzcyLDAuMzY4Yy0yLjc3MywyLjQzNS02LjI3NSwzLjYyOS05Ljc1NywzLjU2OWMtMy41MTEtMC4wNjEtNy4wMTUtMS4zOTYtOS43NDEtNC4wMTZMNC40Myw2My42MyBMNC40Myw2My42M3oiLz48L2c+PC9zdmc+");
+          -webkit-mask-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTIyLjg3NyAxMDEuMDUyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAxMjIuODc3IDEwMS4wNTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTQuNDMsNjMuNjNjLTIuODY5LTIuNzU1LTQuMzUyLTYuNDItNC40MjctMTAuMTFjLTAuMDc0LTMuNjg5LDEuMjYxLTcuNDEyLDQuMDE1LTEwLjI4MSBjMi43NTItMi44NjcsNi40MTctNC4zNTEsMTAuMTA2LTQuNDI1YzMuNjkxLTAuMDc2LDcuNDEyLDEuMjU1LDEwLjI4Myw0LjAxMmwyNC43ODcsMjMuODUxTDk4LjU0MywzLjk4OWwxLjc2OCwxLjM0OWwtMS43Ny0xLjM1NSBjMC4xNDEtMC4xODMsMC4zMDEtMC4zMzksMC40NzktMC40NjZjMi45MzYtMi41NDMsNi42MjEtMy42OTEsMTAuMjIzLTMuNDk1VjAuMDE4bDAuMTc2LDAuMDE2YzMuNjIzLDAuMjQsNy4xNjIsMS44NSw5Ljc3NSw0Ljc2NiBjMi42NTgsMi45NjUsMy44NjMsNi43MzEsMy42NjIsMTAuNDEyaDAuMDA0bC0wLjAxNiwwLjE3NmMtMC4yMzYsMy41NTgtMS43OTEsNy4wMzUtNC42MDksOS42MzJsLTU5LjIyNCw3Mi4wOWwwLjAwNCwwLjAwNCBjLTAuMTExLDAuMTQxLTAuMjM2LDAuMjYyLTAuMzcyLDAuMzY4Yy0yLjc3MywyLjQzNS02LjI3NSwzLjYyOS05Ljc1NywzLjU2OWMtMy41MTEtMC4wNjEtNy4wMTUtMS4zOTYtOS43NDEtNC4wMTZMNC40Myw2My42MyBMNC40Myw2My42M3oiLz48L2c+PC9zdmc+");
+          mask-repeat: no-repeat;
+          -webkit-mask-repeat: no-repeat;
+        }
+      }
+    }
+
+    &-text.error {
+      &::before {
+        --background: var(--white);
+        --border: var(--danger);
+      }
+
+      &::after {
+        --crossmark: var(--danger);
+      }
+    }
+  }
+}

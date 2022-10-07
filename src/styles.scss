@@ -1,1 +1,76 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Comforter+Brush&family=Underdog&family=Montserrat:wght@100;400;500;600;700&display=swap");
+@import "./assets/styles/form.scss";
+
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --background-lighter: #f5f5f5;
+  --background-darker: #efefef;
+  --text: #555555;
+  --text-dark: #404040;
+  --text-light: #aaaaaa;
+  --shadow: rgba(0, 0, 0, 0.3);
+  --grey: #dddddd;
+  --grey-dark: #c3c0bb;
+  --grey-light: #e5e5e5;
+  --grey-light: #eeeeee;
+
+  --primary: #376d3f;
+  --primary-dark: #29512f;
+  --primary-light: #d5eae0;
+  --secondary: #dcb450;
+  --secondary-dark: #daaf44;
+  --secondary-light: #e0d19c;
+  --accent: #8b1e3f;
+  --danger: #e53935;
+  --danger-dark: #d32f2f;
+  --danger-light: #f44336;
+  --success: #43a047;
+  --success-dark: #388e3c;
+  --success-light: #4caf50;
+  --box-shadow-basic: 0 2px 5px var(--shadow);
+  --box-shadow-light: 0px 8px 24px var(--shadow);
+  --border-basic: 1px solid var(--grey-dark);
+  --transition-basic: all 0.2s ease-in-out;
+  --padding: 40px;
+  --padding-small: 20px;
+
+  --max-width: 600px;
+
+  --mobile: 768px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--white);
+  color: var(--text);
+  font: normal 16px "Montserrat", sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: var(--padding);
+
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+    --padding: 20px;
+    --padding-small: 15px;
+  }
+}
+
+img {
+  display: block;
+}
+
+a {
+  color: var(--primary);
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+
+  &:hover,
+  &:focus {
+    color: var(--primary-dark);
+  }
+}

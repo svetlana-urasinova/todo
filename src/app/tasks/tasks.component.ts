@@ -14,6 +14,9 @@ import { Task } from 'src/shared/types';
 export class TasksComponent implements OnInit {
   public tasks: Task[];
 
+  public iconBaseUrl = '/assets/img/icons/';
+  public defaultIcon = 'other';
+
   constructor(private readonly tasksService: TasksService) {}
 
   ngOnInit(): void {
