@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { PipesModule } from 'src/shared/pipes/pipes.module';
-import { TasksService } from 'src/shared/services';
+import { TaskService } from 'src/shared/services';
 import { Task } from 'src/shared/types';
+import { TaskComponent } from './task/task.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, PipesModule],
+  imports: [CommonModule, TaskComponent],
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.scss'],
@@ -14,10 +14,7 @@ import { Task } from 'src/shared/types';
 export class TasksComponent implements OnInit {
   public tasks: Task[];
 
-  public iconBaseUrl = '/assets/img/icons/';
-  public defaultIcon = 'other';
-
-  constructor(private readonly tasksService: TasksService) {}
+  constructor(private readonly tasksService: TaskService) {}
 
   ngOnInit(): void {
     this.tasks = this.tasksService.getAllTasks();

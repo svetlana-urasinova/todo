@@ -1,0 +1,125 @@
+.task {
+  background-color: var(--task);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: var(--padding-small);
+  padding-bottom: var(--padding);
+
+  &:hover {
+    background-color: var(--task-dark);
+  }
+
+  &-header {
+    align-items: center;
+    display: flex;
+    gap: var(--padding-small);
+    margin-bottom: 20px;
+    position: relative;
+
+    .check {
+      display: none;
+      left: 9px;
+      position: absolute;
+      top: 9px;
+      z-index: 1000;
+
+      &-icon {
+        height: 36px;
+        width: 36px;
+      }
+    }
+  }
+
+  &-title {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    margin: 0;
+  }
+
+  &-category {
+    background-color: var(--white);
+    border: 1px solid var(--text-pale);
+    border-radius: 50%;
+    padding: 8px;
+
+    &-icon {
+      display: block;
+      margin: 0 auto;
+      max-height: 32px;
+      max-width: 32px;
+    }
+  }
+
+  &-desc {
+    margin-bottom: 24px;
+  }
+
+  &-extra {
+    align-items: center;
+    color: var(--text-light);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 14px;
+    justify-content: space-between;
+    margin-bottom: var(--padding-small);
+
+    &-block {
+      align-items: center;
+      display: flex;
+      gap: 6px;
+    }
+  }
+
+  &-icon {
+    display: block;
+    height: 100%;
+    width: 100%;
+
+    &-container {
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  &.outdated {
+    background-color: var(--outdated);
+    opacity: 0.8;
+
+    &:hover {
+      background-color: var(--outdated-dark);
+    }
+  }
+
+  &-done,
+  &-approved {
+    .check {
+      display: block;
+    }
+
+    .task-category {
+      opacity: 0.4;
+    }
+
+    &-name {
+      font-weight: 500;
+      margin-left: 4px;
+    }
+  }
+
+  &.done {
+    background-color: var(--done);
+
+    &:hover {
+      background-color: var(--done-dark);
+    }
+  }
+
+  &.approved {
+    background-color: var(--approved);
+
+    &:hover {
+      background-color: var(--approved-dark);
+    }
+  }
+}

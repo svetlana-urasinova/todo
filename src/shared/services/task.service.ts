@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Task, TaskCaterogy, TaskPeriod } from '../types';
 
 @Injectable({ providedIn: 'root' })
-export class TasksService {
+export class TaskService {
   private tasks: Task[] = [
     {
       id: '1',
@@ -37,8 +37,8 @@ export class TasksService {
       cost: 15,
       isPeriodic: true,
       period: TaskPeriod.Week,
-      assignee: 'Алексей, Антон',
-      done: true,
+      done: ['1', '2'],
+      approved: ['1'],
     },
     {
       id: '5',
@@ -47,7 +47,7 @@ export class TasksService {
       cost: 15,
       isPeriodic: true,
       period: TaskPeriod.Day,
-      assignee: 'Антон',
+      done: ['1'],
     },
     {
       id: '6',

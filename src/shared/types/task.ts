@@ -4,11 +4,12 @@ export interface Task {
   title: string;
   desc?: string;
   due_date?: Date;
-  assignee?: string;
   cost: number;
   isPeriodic?: boolean;
   period?: TaskPeriod;
-  done?: boolean;
+  done?: string[];
+  approved?: string[];
+  approvedBy?: string[];
 }
 
 export enum TaskCaterogy {
