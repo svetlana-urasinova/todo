@@ -3,9 +3,10 @@ import dayjs, { Dayjs } from 'dayjs';
 import { monthsRu } from '../types';
 
 @Pipe({
+  standalone: true,
   name: 'date_or_time',
 })
-export class DateOrTime implements PipeTransform {
+export class DateOrTimePipe implements PipeTransform {
   transform(date: Date): string {
     const dateObject = dayjs(date);
     if (!dateObject.isValid()) {

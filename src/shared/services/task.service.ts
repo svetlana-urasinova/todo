@@ -42,6 +42,7 @@ export class TaskService {
       title: 'Помыть свою обувь',
       desc: 'Награда указана за одну пару обуви',
       cost: 15,
+      allowMultipleCompletitions: true,
       period: TaskPeriod.Week,
       results: [
         { userId: '1', adminId: '3', approved: true },
@@ -54,6 +55,7 @@ export class TaskService {
       desc: 'Награда указана за один пакет',
       category: TaskCaterogy.Garbage,
       cost: 15,
+      allowMultipleCompletitions: true,
       period: TaskPeriod.Day,
       results: [{ userId: '1' }],
     },
@@ -64,6 +66,18 @@ export class TaskService {
       due_date: new Date('2022-10-10 14:00:00'),
       period: TaskPeriod.Week,
       results: [],
+    },
+    {
+      id: '7',
+      title: 'Пропылесосить в детской',
+      category: TaskCaterogy.Kidsroom,
+      cost: 20,
+      period: TaskPeriod.Week,
+      results: [
+        {
+          userId: '2',
+        },
+      ],
     },
   ];
 

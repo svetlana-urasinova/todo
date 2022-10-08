@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { User } from '../types';
 
 @Pipe({
+  standalone: true,
   name: 'usernames',
 })
 export class UsernamesPipe implements PipeTransform {

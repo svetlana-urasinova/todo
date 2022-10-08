@@ -3,15 +3,16 @@
     <div
       class="task-content"
       [class.done]="isDone"
-      [class.approved]="isApproved"
-      [class.unapproved]="result?.adminId && !isApproved"
-      [class.reviewed]="isReviewed"
+      [class.approved]="!isAdmin && isApproved"
+      [class.unapproved]="!isAdmin && isUnapproved"
+      [class.reviewed]="isAdmin && isReviewed"
       [class.outdated]="isOutdated"
+      [class.blocked]="!isAdmin && isBlocked"
       [class.disabled]="isDisabled"
       (click)="flip()"
     >
       <div class="task-header">
-        <div class="task-header-approve">
+        <div class="task-header-approve" *ngIf="!isAdmin">
           <img
             class="task-header-approve-icon"
             src="{{ iconBaseUrl }}check.png"
@@ -22,7 +23,7 @@
             class="task-header-approve-icon"
             src="{{ iconBaseUrl }}cross.png"
             alt="Try again!"
-            *ngIf="result?.adminId && !isApproved"
+            *ngIf="!isApproved"
           />
         </div>
         <span class="task-category">
@@ -45,29 +46,43 @@
       </div>
 
       <div class="task-extra">
-        <div class="task-extra-block">
+        <div class="task-extra-cost">
           <div class="task-extra-icon-container">
             <img class="task-extra-icon" src="{{ iconBaseUrl }}game.svg" />
           </div>
-          Награда: {{ task.cost | time }}
+          {{ task.cost | time }}
         </div>
-        <div class="task-extra-block" *ngIf="task.due_date">
+        <div
+          class="task-extra-status"
+          *ngIf="!isAdmin && status?.value !== 'default'"
+        >
+          <div class="task-extra-icon-container">
+            <img
+              class="task-extra-icon"
+              src="{{ iconBaseUrl }}{{ status.icon }}.svg"
+            />
+          </div>
+          {{ status.value | task_status }}
+        </div>
+
+        <div class="task-extra-due-date" *ngIf="task.due_date">
           <div class="task-extra-icon-container">
             <img class="task-extra-icon" src="{{ iconBaseUrl }}calendar.svg" />
           </div>
-          Выполнить до
-          <span class="task-extra-due-date">{{
+          Срок:
+          <span class="task-extra-due-date-value">{{
             task.due_date | date_or_time
           }}</span>
         </div>
       </div>
-      <div class="task-done" *ngIf="task.results.length > 0">
-        Выполнено:
-        <span class="task-done-name">
-          {{ doneByUsers | usernames }}
-        </span>
-      </div>
-      <div class="task-results" *ngIf="task.results.length > 0">
+
+      <div class="task-results" *ngIf="isAdmin && task.results.length > 0">
+        <div class="task-results-done" *ngIf="task.results.length > 0">
+          Выполнено:
+          <span class="task-results-name">
+            {{ doneByUsers | usernames }}
+          </span>
+        </div>
         <div class="task-results-approved" *ngIf="approvedFor.length > 0">
           Одобрено:
           <span class="task-results-name">
@@ -100,15 +115,15 @@
         </div>
         <styled-button
           color="green"
-          icon="{{ iconBaseUrl }}check.svg"
+          icon="{{ iconBaseUrl }}check_white.svg"
           [isDisabled]="isApproved"
           (click)="review({ approved: true })"
         >
         </styled-button>
         <styled-button
           color="red"
-          icon="{{ iconBaseUrl }}cross.svg"
-          [isDisabled]="!isApproved"
+          icon="{{ iconBaseUrl }}cross_white.svg"
+          [isDisabled]="isUnapproved"
           (click)="review({ approved: false })"
         >
         </styled-button>

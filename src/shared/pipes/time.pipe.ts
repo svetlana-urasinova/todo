@@ -3,6 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 const MINUTES_IN_HOUR = 60;
 
 @Pipe({
+  standalone: true,
   name: 'time',
 })
 export class TimePipe implements PipeTransform {

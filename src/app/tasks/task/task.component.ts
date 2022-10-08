@@ -1,7 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { PipesModule } from 'src/shared/pipes/pipes.module';
-import { Task, TaskResult, User } from 'src/shared/types';
+import {
+  Task,
+  TaskResult,
+  TaskStatus,
+  TaskStatusValue,
+  User,
+} from 'src/shared/types';
 import { ButtonComponent, ImgComponent } from 'src/shared/components';
 import { TaskService, UserService } from 'src/shared/services';
 import dayjs from 'dayjs';
@@ -13,15 +18,24 @@ import {
   ReactiveFormsModule,
   UntypedFormGroup,
 } from '@angular/forms';
+import {
+  DateOrTimePipe,
+  TaskStatusPipe,
+  TimePipe,
+  UsernamesPipe,
+} from 'src/shared/pipes';
 
 @Component({
   standalone: true,
   imports: [
     CommonModule,
-    PipesModule,
+    ReactiveFormsModule,
     ButtonComponent,
     ImgComponent,
-    ReactiveFormsModule,
+    DateOrTimePipe,
+    TaskStatusPipe,
+    TimePipe,
+    UsernamesPipe,
   ],
   selector: 'app-task',
   templateUrl: './task.component.html',
@@ -39,11 +53,15 @@ export class TaskComponent implements OnInit {
 
   public result: TaskResult | null;
 
+  public status: TaskStatus;
+
   public isApproved = false;
+  public isUnapproved = false;
   public isDisabled = false;
   public isOutdated = false;
   public isDone = false;
   public isReviewed = false;
+  public isBlocked = false;
 
   public doneByUsers: User[] = [];
   public approvedFor: User[] = [];
@@ -77,9 +95,11 @@ export class TaskComponent implements OnInit {
       this.isDone = this.isTaskDone();
       this.isReviewed = this.isTaskReviewed();
       this.isApproved = this.isTaskApproved();
+      this.isUnapproved = this.isTaskUnapproved();
 
       this.form.controls.selected_user.valueChanges.subscribe(() => {
         this.isApproved = this.isTaskApproved();
+        this.isUnapproved = this.isTaskUnapproved();
       });
     } else {
       this.result =
@@ -89,6 +109,10 @@ export class TaskComponent implements OnInit {
 
       this.isDone = this.isTaskDone();
       this.isApproved = this.isTaskApproved();
+      this.isUnapproved = this.isTaskUnapproved();
+      this.isBlocked = this.isTaskBlocked();
+
+      this.status = this.getTaskStatus();
     }
 
     this.isDisabled = this.isTaskDisabled();
@@ -100,6 +124,10 @@ export class TaskComponent implements OnInit {
     const results = this.task.results.filter(
       (result: TaskResult) => result.userId !== this.userId
     );
+
+    if (!this.task.allowMultipleCompletitions && results.length > 0) {
+      return;
+    }
 
     this.taskService.updateTask({
       ...this.task,
@@ -119,11 +147,15 @@ export class TaskComponent implements OnInit {
   }
 
   public review(decision: { approved: boolean }): void {
-    if (this.isApproved === decision.approved) {
+    const currentUserId = this.form.controls.selected_user.value;
+
+    const currentResult = this.task.results.find(
+      (result: TaskResult) => result.userId === currentUserId
+    );
+
+    if (!currentResult || currentResult.approved === decision.approved) {
       return;
     }
-
-    const currentUserId = this.form.controls.selected_user.value;
 
     const results = this.task.results.filter(
       (result: TaskResult) => result.userId !== currentUserId
@@ -187,11 +219,29 @@ export class TaskComponent implements OnInit {
     }
   }
 
+  private isTaskUnapproved(): boolean {
+    if (this.isAdmin) {
+      const currentUserId = this.form.controls.selected_user.value;
+
+      if (!currentUserId) {
+        return false;
+      }
+
+      const currentResult = this.task.results.find(
+        (result: TaskResult) => result.userId === currentUserId
+      );
+
+      return !!currentResult?.adminId && currentResult?.approved === false;
+    } else {
+      return !!this.result?.adminId && !this.isApproved;
+    }
+  }
+
   private isTaskDisabled(): boolean {
     if (this.isAdmin) {
       return this.task.results.length === 0;
     } else {
-      return this.isOutdated || !!this.result?.approved;
+      return this.isOutdated || this.isBlocked || !!this.result?.approved;
     }
   }
 
@@ -207,9 +257,36 @@ export class TaskComponent implements OnInit {
     return (
       this.isDone &&
       isEqual(
-        sortBy(this.doneByUsers),
-        sortBy([...this.approvedFor, ...this.rejectedFor])
+        sortBy(this.doneByUsers, ['id']),
+        sortBy([...this.approvedFor, ...this.rejectedFor], 'id')
       )
     );
+  }
+
+  private isTaskBlocked(): boolean {
+    return (
+      !this.task.allowMultipleCompletitions &&
+      this.doneByUsers.length > 0 &&
+      this.doneByUsers[0].id !== this.userId
+    );
+  }
+
+  private getTaskStatus(): TaskStatus {
+    if (this.isAdmin) {
+      return { value: TaskStatusValue.Default };
+    }
+
+    switch (true) {
+      case this.isApproved:
+        return { value: TaskStatusValue.Approved, icon: 'check' };
+      case this.result?.adminId && !this.isApproved:
+        return { value: TaskStatusValue.Rejected, icon: 'cross' };
+      case this.isBlocked:
+        return { value: TaskStatusValue.Blocked, icon: 'not-allowed' };
+      case this.isDone:
+        return { value: TaskStatusValue.Done, icon: 'hourglass' };
+      default:
+        return { value: TaskStatusValue.Default };
+    }
   }
 }
