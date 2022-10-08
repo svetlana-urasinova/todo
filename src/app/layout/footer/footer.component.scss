@@ -14,5 +14,18 @@
     font-family: "Comforter Brush", cursive;
     font-size: 24px;
     margin-left: auto;
+
+    a {
+      border-radius: 4px;
+      color: var(--text);
+      display: block;
+      padding: 4px 12px;
+      text-decoration: none;
+
+      &:hover {
+        background: var(--grey-light);
+        color: var(--text-dark);
+      }
+    }
   }
 }
