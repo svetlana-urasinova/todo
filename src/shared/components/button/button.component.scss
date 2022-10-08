@@ -1,0 +1,121 @@
+.styled-button {
+  --text-color: var(--white);
+  background-color: var(--grey);
+  border: none;
+  border-radius: 6px;
+  box-shadow: var(--box-shadow);
+  color: var(--text-color);
+  cursor: pointer;
+  font: 500 14px "Montserrat", sans-serif;
+  height: 42px;
+  min-width: 60px;
+  outline: none;
+  padding: 12px 20px;
+  position: relative;
+  text-align: center;
+  transition: ease-in-out 0.2s;
+  vertical-align: middle;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--grey-dark);
+  }
+
+  &:disabled {
+    background-color: var(--grey);
+    color: var(--white);
+    cursor: default;
+  }
+
+  &.primary:not(:disabled) {
+    background-color: var(--primary);
+
+    &:hover,
+    &:focus {
+      background-color: var(--primary-dark);
+    }
+  }
+
+  &.secondary:not(:disabled) {
+    background-color: var(--secondary);
+
+    &:hover,
+    &:focus {
+      background-color: var(--secondary-dark);
+    }
+  }
+
+  &.red:not(:disabled) {
+    background-color: var(--danger);
+
+    &:hover,
+    &:focus {
+      background-color: var(--danger-dark);
+    }
+  }
+
+  &.yellow:not(:disabled) {
+    background-color: var(--warning);
+
+    &:hover,
+    &:focus {
+      background-color: var(--warning-dark);
+    }
+  }
+
+  &.green:not(:disabled) {
+    background-color: var(--success);
+
+    &:hover,
+    &:focus {
+      background-color: var(--success-dark);
+    }
+  }
+
+  &.blue:not(:disabled) {
+    background-color: var(--info);
+
+    &:hover,
+    &:focus {
+      background-color: var(--info-dark);
+    }
+  }
+
+  &.white:not(:disabled) {
+    background-color: var(--white);
+    color: var(--text);
+
+    &:hover,
+    &:focus {
+      background-color: var(--grey-light);
+    }
+  }
+
+  &.clear {
+    font-size: 16px;
+    font-weight: 600;
+
+    &:not(:disabled) {
+      background-color: transparent;
+      border: none;
+      box-shadow: none;
+      --text-color: var(--text);
+
+      &:hover,
+      &:focus {
+        --text-color: var(--text-dark);
+      }
+    }
+  }
+
+  &.icon {
+    height: 32px;
+    font-size: 28px;
+    line-height: 32px;
+    padding: 0;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    width: 32px;
+  }
+}

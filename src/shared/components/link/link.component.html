@@ -1,0 +1,31 @@
+<ng-container *ngIf="isRouterLink">
+  <a
+    [routerLink]="href"
+    class="styled-link"
+    [class.text]="text"
+    [class.on-dark]="onDark"
+    [class.clear]="clear"
+    [class.button]="isButton"
+    [ngClass]="color"
+  >
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </a>
+</ng-container>
+
+<ng-container *ngIf="!isRouterLink">
+  <a
+    [href]="isDisabled ? href : null"
+    class="styled-link"
+    [class.text]="text"
+    [class.clear]="clear"
+    [class.on-dark]="onDark"
+    [class.button]="isButton"
+    [class.disabled]="isDisabled"
+    [ngClass]="color"
+    [routerLink]="href"
+  >
+    <ng-container *ngTemplateOutlet="content"> </ng-container>
+  </a>
+</ng-container>
+
+<ng-template #content><ng-content></ng-content></ng-template>
