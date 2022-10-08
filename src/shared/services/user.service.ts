@@ -38,4 +38,8 @@ export class UserService {
       return user ? [...users, user] : users;
     }, []);
   }
+
+  public createDefaultUser(): User {
+    return { id: '', name: 'Безымянный пользователь', email: '' };
+  }
 }
