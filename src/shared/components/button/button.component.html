@@ -2,8 +2,15 @@
   class="styled-button"
   [ngClass]="color"
   [type]="type"
-  [class.icon]="isIcon"
-  [disabled]="isDisabled"
+  [class.no-padding]="noPadding"
+  [disabled]="isDisabled || null"
 >
+  <styled-img
+    class="styled-button-icon"
+    [src]="icon"
+    [height]="iconHeight"
+    [width]="iconWidth"
+    *ngIf="icon"
+  ></styled-img>
   <ng-content></ng-content>
 </button>

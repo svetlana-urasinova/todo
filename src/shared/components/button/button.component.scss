@@ -13,6 +13,9 @@
   position: relative;
   text-align: center;
   transition: ease-in-out 0.2s;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
   vertical-align: middle;
   white-space: nowrap;
 
@@ -107,14 +110,11 @@
     }
   }
 
-  &.icon {
-    height: 32px;
-    font-size: 28px;
-    line-height: 32px;
+  &.no-padding {
     padding: 0;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    width: 32px;
+  }
+
+  &-icon {
+    pointer-events: none;
   }
 }
