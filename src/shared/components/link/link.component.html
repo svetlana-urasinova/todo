@@ -14,7 +14,7 @@
 
 <ng-container *ngIf="!isRouterLink">
   <a
-    [href]="isDisabled ? href : null"
+    href="{{ isDisabled ? null : href }}"
     class="styled-link"
     [class.text]="text"
     [class.clear]="clear"
@@ -22,7 +22,6 @@
     [class.button]="isButton"
     [class.disabled]="isDisabled"
     [ngClass]="color"
-    [routerLink]="href"
   >
     <ng-container *ngTemplateOutlet="content"> </ng-container>
   </a>
