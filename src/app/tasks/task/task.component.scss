@@ -1,22 +1,130 @@
 .task {
-  background-color: var(--task);
-  border-radius: 8px;
-  cursor: pointer;
-  padding: var(--padding-small);
-  padding-bottom: var(--padding);
+  position: relative;
+  transition: 0.5s;
+  transform-style: preserve-3d;
 
-  &:hover {
-    background-color: var(--task-dark);
+  &.active {
+    transform: rotateY(180deg);
+  }
+
+  &-container {
+    perspective: 1000;
+    -webkit-perspective: 1000;
+  }
+
+  &-content,
+  &-menu {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    background-color: var(--task);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    gap: var(--padding-small);
+    padding: var(--padding-small);
+    padding-bottom: var(--padding);
+  }
+
+  &-menu {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    left: 0;
+    padding: var(--padding-small);
+    position: absolute;
+    top: 0;
+    transform: rotateY(-180deg);
+    -webkit-transform: rotateY(-180deg);
+    width: 100%;
+
+    &-content {
+      align-items: center;
+      display: flex;
+      gap: 4px;
+      justify-content: center;
+      width: 400px;
+    }
+
+    &-user {
+      flex: auto;
+      padding: 0;
+    }
+  }
+
+  &-content {
+    transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);
+
+    &:hover:not(.disabled) {
+      background-color: var(--task-dark);
+    }
+
+    &.outdated {
+      border: 4px solid var(--outdated);
+      opacity: 0.4;
+
+      .task-extra-due-date {
+        color: var(--outdated-text);
+        font-weight: 600;
+      }
+    }
+
+    &.done {
+      background-color: var(--done);
+
+      &:hover:not(.disabled) {
+        background-color: var(--done-dark);
+      }
+    }
+
+    &.unapproved {
+      background-color: var(--unapproved);
+
+      &:hover:not(.disabled) {
+        background-color: var(--unapproved-dark);
+      }
+    }
+
+    &.approved {
+      background-color: var(--approved);
+
+      &:hover:not(.disabled) {
+        background-color: var(--approved-dark);
+      }
+
+      .task-header-approve {
+        display: block;
+      }
+
+      .task-category {
+        opacity: 0.4;
+      }
+    }
+
+    &.reviewed {
+      background-color: var(--reviewed);
+
+      &:hover:not(.disabled) {
+        background-color: var(--reviewed-dark);
+      }
+    }
+
+    &.disabled {
+      cursor: default;
+    }
   }
 
   &-header {
     align-items: center;
     display: flex;
     gap: var(--padding-small);
-    margin-bottom: 20px;
     position: relative;
 
-    .check {
+    &-approve {
       display: none;
       left: 9px;
       position: absolute;
@@ -24,8 +132,8 @@
       z-index: 1000;
 
       &-icon {
-        height: 36px;
-        width: 36px;
+        height: 32px;
+        width: 32px;
       }
     }
   }
@@ -35,6 +143,11 @@
     font-weight: 500;
     letter-spacing: 0.3px;
     margin: 0;
+  }
+
+  &-desc {
+    color: var(--text-light);
+    margin-top: 4px;
   }
 
   &-category {
@@ -51,75 +164,54 @@
     }
   }
 
-  &-desc {
-    margin-bottom: 24px;
-  }
-
   &-extra {
     align-items: center;
-    color: var(--text-light);
     display: flex;
     flex-wrap: wrap;
-    font-size: 14px;
+    font-size: 13px;
     justify-content: space-between;
-    margin-bottom: var(--padding-small);
 
     &-block {
       align-items: center;
       display: flex;
-      gap: 6px;
     }
-  }
 
-  &-icon {
-    display: block;
-    height: 100%;
-    width: 100%;
+    &-icon {
+      display: block;
+      height: 100%;
+      width: 100%;
 
-    &-container {
-      height: 18px;
-      width: 18px;
+      &-container {
+        height: 16px;
+        margin-right: 8px;
+        width: 16px;
+      }
     }
-  }
 
-  &.outdated {
-    background-color: var(--outdated);
-    opacity: 0.6;
-
-    &:hover {
-      background-color: var(--outdated-dark);
+    &-due-date {
+      margin-left: 4px;
     }
   }
 
   &-done,
-  &-approved {
-    .check {
-      display: block;
-    }
-
-    .task-category {
-      opacity: 0.4;
-    }
-
+  &-results {
     &-name {
       font-weight: 500;
       margin-left: 4px;
     }
   }
 
-  &.done {
-    background-color: var(--done);
+  &-results {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-small);
 
-    &:hover {
-      background-color: var(--done-dark);
-    }
-  }
+    // &-approved {
+    //   background-color: var(--success-light);
+    // }
 
-  &.approved {
-    background-color: var(--approved);
-
-    &:hover {
-      background-color: var(--approved-dark);
-    }
+    // &-rejected {
+    //   background-color: var(--danger-light);
+    // }
   }
 }

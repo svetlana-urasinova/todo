@@ -1,3 +1,8 @@
 <ul class="tasks">
-  <app-task [task]="task" *ngFor="let task of tasks"></app-task>
+  <app-task
+    [task]="task"
+    [userId]="userId"
+    [isAdmin]="isAdmin"
+    *ngFor="let task of tasks"
+  ></app-task>
 </ul>

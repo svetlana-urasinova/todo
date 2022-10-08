@@ -1,51 +1,126 @@
-<li
-  class="task"
-  [class.done]="task.done"
-  [class.approved]="task.approved"
-  [class.outdated]="isOutdated"
->
-  <div class="task-header">
-    <div class="check">
-      <img class="check-icon" src="{{ iconBaseUrl }}check.png" alt="Done!" />
-    </div>
-    <span class="task-category">
-      <img
-        class="task-category-icon"
-        src="{{ iconBaseUrl }}categories/{{ task.category || defaultIcon }}.png"
-        [alt]="task.category"
-      />
-    </span>
-    <h3 class="task-title">
-      {{ task.title }}
-    </h3>
-  </div>
-  <div class="task-desc" *ngIf="task.desc">
-    {{ task.desc }}
-  </div>
-  <div class="task-extra">
-    <div class="task-extra-block">
-      <div class="task-icon-container">
-        <img class="task-icon" src="{{ iconBaseUrl }}game.svg" />
+<li class="task-container">
+  <div class="task" [class.active]="showMenu">
+    <div
+      class="task-content"
+      [class.done]="isDone"
+      [class.approved]="isApproved"
+      [class.unapproved]="result?.adminId && !isApproved"
+      [class.reviewed]="isReviewed"
+      [class.outdated]="isOutdated"
+      [class.disabled]="isDisabled"
+      (click)="flip()"
+    >
+      <div class="task-header">
+        <div class="task-header-approve">
+          <img
+            class="task-header-approve-icon"
+            src="{{ iconBaseUrl }}check.png"
+            alt="Done!"
+            *ngIf="isApproved"
+          />
+          <img
+            class="task-header-approve-icon"
+            src="{{ iconBaseUrl }}cross.png"
+            alt="Try again!"
+            *ngIf="result?.adminId && !isApproved"
+          />
+        </div>
+        <span class="task-category">
+          <img
+            class="task-category-icon"
+            src="{{ iconBaseUrl }}categories/{{
+              task.category || defaultIcon
+            }}.png"
+            [alt]="task.category"
+          />
+        </span>
+        <div class="task-header-content">
+          <h3 class="task-title">
+            {{ task.title }}
+          </h3>
+          <div class="task-desc" *ngIf="task.desc">
+            {{ task.desc }}
+          </div>
+        </div>
       </div>
-      Награда: {{ task.cost | time }}
-    </div>
-    <div class="task-extra-block" *ngIf="task.due_date && !task.done">
-      <div class="task-icon-container">
-        <img class="task-icon" src="{{ iconBaseUrl }}calendar.svg" />
+
+      <div class="task-extra">
+        <div class="task-extra-block">
+          <div class="task-extra-icon-container">
+            <img class="task-extra-icon" src="{{ iconBaseUrl }}game.svg" />
+          </div>
+          Награда: {{ task.cost | time }}
+        </div>
+        <div class="task-extra-block" *ngIf="task.due_date">
+          <div class="task-extra-icon-container">
+            <img class="task-extra-icon" src="{{ iconBaseUrl }}calendar.svg" />
+          </div>
+          Выполнить до
+          <span class="task-extra-due-date">{{
+            task.due_date | date_or_time
+          }}</span>
+        </div>
       </div>
-      Выполнить до {{ task.due_date | date_or_time }}
+      <div class="task-done" *ngIf="task.results.length > 0">
+        Выполнено:
+        <span class="task-done-name">
+          {{ doneByUsers | usernames }}
+        </span>
+      </div>
+      <div class="task-results" *ngIf="task.results.length > 0">
+        <div class="task-results-approved" *ngIf="approvedFor.length > 0">
+          Одобрено:
+          <span class="task-results-name">
+            {{ approvedFor | usernames }}
+          </span>
+        </div>
+        <div class="task-results-rejected" *ngIf="rejectedFor.length > 0">
+          Отклонено:
+          <span class="task-results-name">
+            {{ rejectedFor | usernames }}
+          </span>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="task-done" *ngIf="task.done">
-    Выполнено:
-    <span class="task-done-name">
-      {{ doneUsers | usernames }}
-    </span>
-  </div>
-  <div class="task-approved" *ngIf="task.approved">
-    Одобрено:
-    <span class="task-approved-name">
-      {{ approvedUsers | usernames }}
-    </span>
+    <div class="task-menu" [formGroup]="form" (click)="flip()">
+      <div class="task-menu-content" *ngIf="isAdmin">
+        <div class="task-menu-user">
+          <select
+            class="styled-form-input"
+            formControlName="selected_user"
+            (click)="stopPropagation($event)"
+          >
+            <option
+              [value]="user.id"
+              *ngFor="let user of doneByUsers; let i = index"
+            >
+              {{ user.name }}
+            </option>
+          </select>
+        </div>
+        <styled-button
+          color="green"
+          icon="{{ iconBaseUrl }}check.svg"
+          [isDisabled]="isApproved"
+          (click)="review({ approved: true })"
+        >
+        </styled-button>
+        <styled-button
+          color="red"
+          icon="{{ iconBaseUrl }}cross.svg"
+          [isDisabled]="!isApproved"
+          (click)="review({ approved: false })"
+        >
+        </styled-button>
+      </div>
+      <div class="task-menu-content" *ngIf="!isAdmin">
+        <styled-button color="green" (click)="markAsDone()">
+          Уже готово!
+        </styled-button>
+        <styled-button color="red" (click)="markAsNotDone()">
+          Ой, ещё нет
+        </styled-button>
+      </div>
+    </div>
   </div>
 </li>
