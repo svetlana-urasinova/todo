@@ -24,12 +24,14 @@ import {
   TimePipe,
   UsernamesPipe,
 } from 'src/shared/pipes';
+import { TaskHeaderComponent } from './task-header/task-header.component';
 
 @Component({
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    TaskHeaderComponent,
     ButtonComponent,
     ImgComponent,
     DateOrTimePipe,
@@ -49,7 +51,6 @@ export class TaskComponent implements OnInit {
   public form: UntypedFormGroup;
 
   public iconBaseUrl = '/assets/img/icons/';
-  public defaultIcon = 'other';
 
   public result: TaskResult | null;
 

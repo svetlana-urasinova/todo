@@ -11,39 +11,11 @@
       [class.disabled]="isDisabled"
       (click)="flip()"
     >
-      <div class="task-header">
-        <div class="task-header-approve" *ngIf="!isAdmin">
-          <img
-            class="task-header-approve-icon"
-            src="{{ iconBaseUrl }}check.png"
-            alt="Done!"
-            *ngIf="isApproved"
-          />
-          <img
-            class="task-header-approve-icon"
-            src="{{ iconBaseUrl }}cross.png"
-            alt="Try again!"
-            *ngIf="!isApproved"
-          />
-        </div>
-        <span class="task-category">
-          <img
-            class="task-category-icon"
-            src="{{ iconBaseUrl }}categories/{{
-              task.category || defaultIcon
-            }}.png"
-            [alt]="task.category"
-          />
-        </span>
-        <div class="task-header-content">
-          <h3 class="task-title">
-            {{ task.title }}
-          </h3>
-          <div class="task-desc" *ngIf="task.desc">
-            {{ task.desc }}
-          </div>
-        </div>
-      </div>
+      <app-task-header
+        [task]="task"
+        [isApproved]="isApproved"
+        [isUnapproved]="isUnapproved"
+      ></app-task-header>
 
       <div class="task-extra">
         <div class="task-extra-cost">
