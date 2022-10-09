@@ -7,15 +7,12 @@
   </div>
   <div
     class="task-sidebar-status"
-    *ngIf="!isAdmin && status !== 'default'"
+    *ngIf="!isAdmin && status.value !== taskStatus.Default.value"
   >
     <div class="task-sidebar-icon-container">
-      <img
-        class="task-sidebar-icon"
-        src="{{ iconBaseUrl }}{{ status.icon }}.svg"
-      />
+      <img class="task-sidebar-icon" src="{{ iconBaseUrl }}{{ status.icon }}" />
     </div>
-    {{ status | task_status }}
+    {{ status.text }}
   </div>
 
   <div class="task-sidebar-date" *ngIf="task.due_date">

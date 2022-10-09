@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { Task, TaskResult, TaskStatus, User } from 'src/shared/types';
+import {
+  Task,
+  TaskResult,
+  TaskResultDecision,
+  TaskStatus,
+  User,
+} from 'src/shared/types';
 import { ButtonComponent, ImgComponent } from 'src/shared/components';
 import { TaskService, UserService } from 'src/shared/services';
 import dayjs from 'dayjs';
@@ -12,12 +18,7 @@ import {
   ReactiveFormsModule,
   UntypedFormGroup,
 } from '@angular/forms';
-import {
-  DateOrTimePipe,
-  TaskStatusPipe,
-  TimePipe,
-  UsernamesPipe,
-} from 'src/shared/pipes';
+import { UsernamesPipe } from 'src/shared/pipes';
 import { TaskHeaderComponent } from './task-header/task-header.component';
 import { TaskSidebarComponent } from './task-sidebar/task-sidebar.component';
 
@@ -30,9 +31,6 @@ import { TaskSidebarComponent } from './task-sidebar/task-sidebar.component';
     TaskSidebarComponent,
     ButtonComponent,
     ImgComponent,
-    DateOrTimePipe,
-    TaskStatusPipe,
-    TimePipe,
     UsernamesPipe,
   ],
   selector: 'app-task',
@@ -52,19 +50,16 @@ export class TaskComponent implements OnInit {
 
   public status: TaskStatus;
 
-  public isApproved = false;
-  public isUnapproved = false;
   public isDisabled = false;
   public isOutdated = false;
-  public isDone = false;
   public isReviewed = false;
-  public isBlocked = false;
 
   public doneByUsers: User[] = [];
   public approvedFor: User[] = [];
   public rejectedFor: User[] = [];
 
   public taskStatus = TaskStatus;
+  public taskResultDecision = TaskResultDecision;
 
   public showMenu = false;
 
@@ -83,12 +78,9 @@ export class TaskComponent implements OnInit {
       this.isOutdated = true;
     }
 
-    this.doneByUsers = this.task.results.map(
-      (result: TaskResult) => this.userService.getUser(result.userId) as User
-    );
-
-    this.approvedFor = this.getReviewedUsers({ approved: true });
-    this.rejectedFor = this.getReviewedUsers({ approved: false });
+    this.doneByUsers = this.getUsersByDecision();
+    this.approvedFor = this.getUsersByDecision(TaskResultDecision.Approved);
+    this.rejectedFor = this.getUsersByDecision(TaskResultDecision.Rejected);
 
     if (this.isAdmin) {
       this.form.controls.selected_user.valueChanges.subscribe(() => {
@@ -97,19 +89,15 @@ export class TaskComponent implements OnInit {
 
       this.isReviewed = this.isTaskReviewed();
     } else {
-      this.result =
-        this.task.results.find(
-          (result: TaskResult) => result.userId === this.userId
-        ) || null;
+      this.result = this.getResultForUser(this.userId);
     }
+
     this.status = this.getTaskStatus();
 
     this.isDisabled = this.isTaskDisabled();
   }
 
   public markAsDone(): void {
-    this.result = { userId: this.userId };
-
     const results = this.task.results.filter(
       (result: TaskResult) => result.userId !== this.userId
     );
@@ -120,7 +108,7 @@ export class TaskComponent implements OnInit {
 
     this.taskService.updateTask({
       ...this.task,
-      results: [...results, this.result],
+      results: [...results, { userId: this.userId }],
     });
   }
 
@@ -135,14 +123,12 @@ export class TaskComponent implements OnInit {
     });
   }
 
-  public review(decision: { approved: boolean }): void {
+  public review(decision: TaskResultDecision): void {
     const currentUserId = this.form.controls.selected_user.value;
 
-    const currentResult = this.task.results.find(
-      (result: TaskResult) => result.userId === currentUserId
-    );
+    const currentResult = this.getResultForUser(currentUserId);
 
-    if (!currentResult || currentResult.approved === decision.approved) {
+    if (!currentResult || currentResult.decision === decision) {
       return;
     }
 
@@ -158,14 +144,11 @@ export class TaskComponent implements OnInit {
           {
             userId: currentUserId,
             adminId: this.userId,
-            approved: decision.approved,
+            decision,
           },
         ],
       });
     }
-
-    this.approvedFor = this.getReviewedUsers({ approved: true });
-    this.rejectedFor = this.getReviewedUsers({ approved: false });
 
     this.flip();
   }
@@ -182,19 +165,36 @@ export class TaskComponent implements OnInit {
     $event?.stopPropagation();
   }
 
-  private getReviewedUsers(decision: { approved: boolean }): User[] {
-    return this.task.results
-      .filter((result: TaskResult) => result.approved === decision.approved)
-      .map(
-        (result: TaskResult) => this.userService.getUser(result.userId) as User
-      );
+  private getUsersByDecision(decision?: TaskResultDecision): User[] {
+    return this.task.results.reduce((users: User[], result: TaskResult) => {
+      const user = this.userService.getUser(result.userId);
+
+      if (!user) {
+        return users;
+      }
+
+      switch (decision) {
+        case undefined:
+          return [...users, user];
+        default:
+          if (result.decision === decision) {
+            users = [...users, user];
+          }
+
+          return users;
+      }
+    }, []);
   }
 
   private isTaskDisabled(): boolean {
     if (this.isAdmin) {
       return this.task.results.length === 0;
     } else {
-      return this.isOutdated || this.isBlocked || !!this.result?.approved;
+      return (
+        this.isOutdated ||
+        this.status.value === TaskStatus.Blocked.value ||
+        !!(this.result?.decision === TaskResultDecision.Approved)
+      );
     }
   }
 
@@ -209,35 +209,25 @@ export class TaskComponent implements OnInit {
   }
 
   private getTaskStatus(): TaskStatus {
-    if (this.isAdmin) {
-      const currentUserId = this.form.controls.selected_user.value;
-      const currentResult = this.getResultForUser(currentUserId);
+    if (this.doneByUsers.length === 0) {
+      return TaskStatus.Default;
+    }
 
-      switch (true) {
-        case currentResult?.approved:
-          return TaskStatus.Approved;
-        case currentResult?.adminId && !currentResult.approved:
-          return TaskStatus.Rejected;
-        case this.task.results.length > 0:
-          return TaskStatus.Done;
-        default:
-          return TaskStatus.Default;
-      }
-    } else {
-      switch (true) {
-        case this.result?.approved:
-          return TaskStatus.Approved;
-        case this.result?.adminId && !this.result?.approved:
-          return TaskStatus.Rejected;
-        case !this.task.allowMultipleCompletitions &&
-          this.doneByUsers.length > 0 &&
-          this.doneByUsers[0].id !== this.userId:
-          return TaskStatus.Blocked;
-        case !!this.result:
-          return TaskStatus.Done;
-        default:
-          return TaskStatus.Default;
-      }
+    const currentResult = this.isAdmin
+      ? this.getResultForUser(this.form.controls.selected_user.value)
+      : this.result;
+
+    switch (true) {
+      case currentResult?.decision === TaskResultDecision.Approved:
+        return TaskStatus.Approved;
+      case currentResult?.decision === TaskResultDecision.Rejected:
+        return TaskStatus.Rejected;
+      case !this.isAdmin &&
+        !this.task.allowMultipleCompletitions &&
+        this.doneByUsers[0].id !== this.userId:
+        return TaskStatus.Blocked;
+      default:
+        return TaskStatus.Done;
     }
   }
 

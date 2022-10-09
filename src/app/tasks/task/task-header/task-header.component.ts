@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, Input } from '@angular/core';
 import { ImgComponent } from 'src/shared/components';
 import { AuthService, NavigationService } from 'src/shared/services';
-import { Task, TaskStatusValue } from 'src/shared/types';
+import { Task, TaskStatus } from 'src/shared/types';
 
 @Component({
   standalone: true,
@@ -13,9 +13,9 @@ import { Task, TaskStatusValue } from 'src/shared/types';
 })
 export class TaskHeaderComponent implements OnInit {
   @Input() public task: Task;
-  @Input() public status: TaskStatusValue;
+  @Input() public status: TaskStatus;
 
-  public taskStatusValue = TaskStatusValue;
+  public taskStatus = TaskStatus;
 
   public iconBaseUrl: string;
   public defaultIcon = 'other';

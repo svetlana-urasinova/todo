@@ -13,8 +13,13 @@ export interface Task {
 export interface TaskResult {
   userId: string;
   adminId?: string;
-  approved?: boolean;
+  decision?: TaskResultDecision;
   amount?: number;
+}
+
+export enum TaskResultDecision {
+  Approved = 'approved',
+  Rejected = 'rejected',
 }
 
 export enum TaskStatusValue {
@@ -38,7 +43,7 @@ export class TaskStatus {
   );
   static readonly Done = new TaskStatus(
     TaskStatusValue.Done,
-    'Одобрено',
+    'На проверке',
     'check.svg'
   );
   static readonly Rejected = new TaskStatus(

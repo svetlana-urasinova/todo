@@ -4,9 +4,7 @@
       class="task-content"
       [class.done]="status.value === taskStatus.Done.value"
       [class.approved]="!isAdmin && status.value === taskStatus.Approved.value"
-      [class.unapproved]="
-        !isAdmin && status.value === taskStatus.Rejected.value
-      "
+      [class.rejected]="!isAdmin && status.value === taskStatus.Rejected.value"
       [class.blocked]="status.value === taskStatus.Blocked.value"
       [class.reviewed]="isReviewed"
       [class.outdated]="isOutdated"
@@ -57,23 +55,31 @@
         <styled-button
           color="green"
           icon="{{ iconBaseUrl }}check_white.svg"
-          [isDisabled]="isApproved"
-          (click)="review({ approved: true })"
+          [isDisabled]="status.value === taskStatus.Approved.value"
+          (click)="review(taskResultDecision.Approved)"
         >
         </styled-button>
         <styled-button
           color="red"
           icon="{{ iconBaseUrl }}cross_white.svg"
-          [isDisabled]="isUnapproved"
-          (click)="review({ approved: false })"
+          [isDisabled]="status.value === taskStatus.Rejected.value"
+          (click)="review(taskResultDecision.Rejected)"
         >
         </styled-button>
       </div>
       <div class="task-menu-content" *ngIf="!isAdmin">
-        <styled-button color="green" (click)="markAsDone()">
+        <styled-button
+          color="green"
+          [isDisabled]="status.value === taskStatus.Done.value"
+          (click)="markAsDone()"
+        >
           Уже готово!
         </styled-button>
-        <styled-button color="red" (click)="markAsNotDone()">
+        <styled-button
+          color="red"
+          [isDisabled]="status.value !== taskStatus.Done.value"
+          (click)="markAsNotDone()"
+        >
           Ой, ещё нет
         </styled-button>
       </div>

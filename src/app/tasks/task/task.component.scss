@@ -80,13 +80,11 @@
       }
     }
 
-
-
-    &.unapproved {
-      background-color: var(--unapproved);
+    &.rejected {
+      background-color: var(--rejected);
 
       &:hover:not(.disabled) {
-        background-color: var(--unapproved-dark);
+        background-color: var(--rejected-dark);
       }
     }
 
@@ -108,7 +106,7 @@
 
     &.blocked {
       background-color: var(--grey-light);
-      border: 4px solid var(--done);
+      border: 4px solid var(--blocked);
       opacity: 0.4;
     }
 
@@ -116,10 +114,6 @@
       cursor: default;
     }
   }
-
-
-
-  
 
   &-results {
     display: flex;
