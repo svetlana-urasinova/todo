@@ -38,4 +38,12 @@
       margin-left: 4px;
     }
   }
+
+  &.outdated {
+    .task-sidebar-date {
+      font-weight: 500;
+      text-decoration: line-through;
+      text-decoration-thickness: 1.5px;
+    }
+  }
 }

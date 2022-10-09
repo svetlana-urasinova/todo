@@ -14,6 +14,7 @@ import { Task, TaskStatus } from 'src/shared/types';
 export class TaskSidebarComponent implements OnInit {
   @Input() public task: Task;
   @Input() public status: TaskStatus;
+  @Input() public isOutdated = false;
 
   public taskStatus = TaskStatus;
 

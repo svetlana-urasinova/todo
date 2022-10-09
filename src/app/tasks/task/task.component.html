@@ -1,88 +1,42 @@
-<li class="task-container">
-  <div class="task" [class.active]="showMenu">
-    <div
-      class="task-content"
-      [class.done]="status.value === taskStatus.Done.value"
-      [class.approved]="!isAdmin && status.value === taskStatus.Approved.value"
-      [class.rejected]="!isAdmin && status.value === taskStatus.Rejected.value"
-      [class.blocked]="status.value === taskStatus.Blocked.value"
-      [class.reviewed]="isReviewed"
-      [class.outdated]="isOutdated"
-      [class.disabled]="isDisabled"
-      (click)="flip()"
-    >
-      <app-task-header [task]="task" [status]="status"></app-task-header>
-
-      <app-task-sidebar [task]="task" [status]="status"></app-task-sidebar>
-
-      <div class="task-results" *ngIf="isAdmin && task.results.length > 0">
-        <div class="task-results-done" *ngIf="task.results.length > 0">
-          Выполнено:
-          <span class="task-results-name">
-            {{ doneByUsers | usernames }}
-          </span>
-        </div>
-        <div class="task-results-approved" *ngIf="approvedFor.length > 0">
-          Одобрено:
-          <span class="task-results-name">
-            {{ approvedFor | usernames }}
-          </span>
-        </div>
-        <div class="task-results-rejected" *ngIf="rejectedFor.length > 0">
-          Отклонено:
-          <span class="task-results-name">
-            {{ rejectedFor | usernames }}
-          </span>
-        </div>
+<li class="task">
+  <div class="task-card" [class.active]="showMenu">
+    <div class="task-card-front" (click)="flip()">
+      <div
+        class="task-content"
+        [class.done]="status?.value === taskStatus.Done.value"
+        [class.approved]="
+          !isAdmin && status?.value === taskStatus.Approved.value
+        "
+        [class.rejected]="
+          !isAdmin && status?.value === taskStatus.Rejected.value
+        "
+        [class.blocked]="status?.value === taskStatus.Blocked.value"
+        [class.reviewed]="isReviewed"
+        [class.outdated]="isOutdated"
+        [class.disabled]="isDisabled"
+      >
+        <app-task-header [task]="task" [status]="status"></app-task-header>
+        <app-task-sidebar
+          [task]="task"
+          [status]="status"
+          [isOutdated]="isOutdated"
+        ></app-task-sidebar>
+        <app-task-results
+          [task]="task"
+          [doneByUsers]="doneByUsers"
+          [approvedFor]="approvedFor"
+          [rejectedFor]="rejectedFor"
+          *ngIf="isAdmin"
+        ></app-task-results>
       </div>
     </div>
-    <div class="task-menu" [formGroup]="form" (click)="flip()">
-      <div class="task-menu-content" *ngIf="isAdmin">
-        <div class="task-menu-user">
-          <select
-            class="styled-form-input"
-            formControlName="selected_user"
-            (click)="stopPropagation($event)"
-          >
-            <option
-              [value]="user.id"
-              *ngFor="let user of doneByUsers; let i = index"
-            >
-              {{ user.name }}
-            </option>
-          </select>
-        </div>
-        <styled-button
-          color="green"
-          icon="{{ iconBaseUrl }}check_white.svg"
-          [isDisabled]="status.value === taskStatus.Approved.value"
-          (click)="review(taskResultDecision.Approved)"
-        >
-        </styled-button>
-        <styled-button
-          color="red"
-          icon="{{ iconBaseUrl }}cross_white.svg"
-          [isDisabled]="status.value === taskStatus.Rejected.value"
-          (click)="review(taskResultDecision.Rejected)"
-        >
-        </styled-button>
-      </div>
-      <div class="task-menu-content" *ngIf="!isAdmin">
-        <styled-button
-          color="green"
-          [isDisabled]="status.value === taskStatus.Done.value"
-          (click)="markAsDone()"
-        >
-          Уже готово!
-        </styled-button>
-        <styled-button
-          color="red"
-          [isDisabled]="status.value !== taskStatus.Done.value"
-          (click)="markAsNotDone()"
-        >
-          Ой, ещё нет
-        </styled-button>
-      </div>
+    <div class="task-card-back" [formGroup]="form" (click)="flip()">
+      <app-task-menu
+        [task]="task"
+        [result]="result"
+        [status]="status"
+        [doneByUsers]="doneByUsers"
+      ></app-task-menu>
     </div>
   </div>
 </li>

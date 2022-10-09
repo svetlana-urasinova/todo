@@ -1,0 +1,10 @@
+.task-results {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &-name {
+    font-weight: 500;
+    margin-left: 4px;
+  }
+}

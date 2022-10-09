@@ -1,0 +1,48 @@
+<div class="task-menu">
+  <ng-container *ngIf="isAdmin">
+    <div class="task-menu-user">
+      <select
+        class="styled-form-input"
+        formControlName="selected_user"
+        (click)="stopPropagation($event)"
+      >
+        <option
+          [value]="user.id"
+          *ngFor="let user of doneByUsers; let i = index"
+        >
+          {{ user.name }}
+        </option>
+      </select>
+    </div>
+    <styled-button
+      color="green"
+      icon="{{ iconBaseUrl }}check_white.svg"
+      [isDisabled]="status?.value === taskStatus.Approved.value"
+      (click)="review(taskResultDecision.Approved)"
+    >
+    </styled-button>
+    <styled-button
+      color="red"
+      icon="{{ iconBaseUrl }}cross_white.svg"
+      [isDisabled]="status?.value === taskStatus.Rejected.value"
+      (click)="review(taskResultDecision.Rejected)"
+    >
+    </styled-button>
+  </ng-container>
+  <ng-container *ngIf="!isAdmin">
+    <styled-button
+      color="green"
+      [isDisabled]="status.value === taskStatus.Done.value"
+      (click)="markAsDone()"
+    >
+      Уже готово!
+    </styled-button>
+    <styled-button
+      color="red"
+      [isDisabled]="status.value !== taskStatus.Done.value"
+      (click)="markAsNotDone()"
+    >
+      Ой, ещё нет
+    </styled-button>
+  </ng-container>
+</div>

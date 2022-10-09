@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {
   Task,
   TaskResult,
@@ -7,20 +7,22 @@ import {
   TaskStatus,
   User,
 } from 'src/shared/types';
-import { ButtonComponent, ImgComponent } from 'src/shared/components';
-import { TaskService, UserService } from 'src/shared/services';
+import { ButtonComponent } from 'src/shared/components';
+import { UserService } from 'src/shared/services';
 import dayjs from 'dayjs';
 import isEqual from 'lodash.isequal';
 import sortBy from 'lodash.sortby';
 
 import {
   FormBuilder,
+  FormControl,
   ReactiveFormsModule,
   UntypedFormGroup,
 } from '@angular/forms';
-import { UsernamesPipe } from 'src/shared/pipes';
 import { TaskHeaderComponent } from './task-header/task-header.component';
 import { TaskSidebarComponent } from './task-sidebar/task-sidebar.component';
+import { TaskResultsComponent } from './task-results/task-results.component';
+import { TaskMenuComponent } from './task-menu/task-menu.component';
 
 @Component({
   standalone: true,
@@ -29,22 +31,22 @@ import { TaskSidebarComponent } from './task-sidebar/task-sidebar.component';
     ReactiveFormsModule,
     TaskHeaderComponent,
     TaskSidebarComponent,
+    TaskResultsComponent,
+    TaskMenuComponent,
     ButtonComponent,
-    ImgComponent,
-    UsernamesPipe,
   ],
   selector: 'app-task',
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss'],
 })
 export class TaskComponent implements OnInit {
+  @ViewChild(TaskMenuComponent) taskMenuComponent: TaskMenuComponent;
+
   @Input() public task: Task;
   @Input() public userId: string;
   @Input() public isAdmin: boolean;
 
   public form: UntypedFormGroup;
-
-  public iconBaseUrl = '/assets/img/icons/';
 
   public result: TaskResult | null;
 
@@ -65,15 +67,10 @@ export class TaskComponent implements OnInit {
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly taskService: TaskService,
     private readonly userService: UserService
   ) {}
 
   public ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      selected_user: [this.task.results[0]?.userId || null],
-    });
-
     if (dayjs(this.task.due_date).isBefore(dayjs())) {
       this.isOutdated = true;
     }
@@ -82,75 +79,31 @@ export class TaskComponent implements OnInit {
     this.approvedFor = this.getUsersByDecision(TaskResultDecision.Approved);
     this.rejectedFor = this.getUsersByDecision(TaskResultDecision.Rejected);
 
+    this.form = this.formBuilder.group({
+      selected_user: new FormControl(this.doneByUsers[0]?.id || null),
+    });
+
     if (this.isAdmin) {
-      this.form.controls.selected_user.valueChanges.subscribe(() => {
-        this.status = this.getTaskStatus();
-      });
+      this.result = this.getResultForUser(this.form.value.selected_user);
+
+      this.form.controls.selected_user.valueChanges.subscribe(
+        (userId: string) => {
+          this.result = this.getResultForUser(userId);
+          this.status = this.getTaskStatus();
+        }
+      );
 
       this.isReviewed = this.isTaskReviewed();
     } else {
       this.result = this.getResultForUser(this.userId);
-    }
 
-    this.status = this.getTaskStatus();
+      this.status = this.getTaskStatus();
+    }
 
     this.isDisabled = this.isTaskDisabled();
-  }
 
-  public markAsDone(): void {
-    const results = this.task.results.filter(
-      (result: TaskResult) => result.userId !== this.userId
-    );
-
-    if (!this.task.allowMultipleCompletitions && results.length > 0) {
-      return;
-    }
-
-    this.taskService.updateTask({
-      ...this.task,
-      results: [...results, { userId: this.userId }],
-    });
-  }
-
-  public markAsNotDone(): void {
-    const results = this.task.results.filter(
-      (result: TaskResult) => result.userId !== this.userId
-    );
-
-    this.taskService.updateTask({
-      ...this.task,
-      results,
-    });
-  }
-
-  public review(decision: TaskResultDecision): void {
-    const currentUserId = this.form.controls.selected_user.value;
-
-    const currentResult = this.getResultForUser(currentUserId);
-
-    if (!currentResult || currentResult.decision === decision) {
-      return;
-    }
-
-    const results = this.task.results.filter(
-      (result: TaskResult) => result.userId !== currentUserId
-    );
-
-    if (currentUserId) {
-      this.taskService.updateTask({
-        ...this.task,
-        results: [
-          ...results,
-          {
-            userId: currentUserId,
-            adminId: this.userId,
-            decision,
-          },
-        ],
-      });
-    }
-
-    this.flip();
+    this.status = this.getTaskStatus();
+    console.log(this.status);
   }
 
   public flip(): void {
@@ -159,10 +112,6 @@ export class TaskComponent implements OnInit {
     }
 
     this.showMenu = !this.showMenu;
-  }
-
-  public stopPropagation($event: Event): void {
-    $event?.stopPropagation();
   }
 
   private getUsersByDecision(decision?: TaskResultDecision): User[] {
@@ -213,14 +162,10 @@ export class TaskComponent implements OnInit {
       return TaskStatus.Default;
     }
 
-    const currentResult = this.isAdmin
-      ? this.getResultForUser(this.form.controls.selected_user.value)
-      : this.result;
-
     switch (true) {
-      case currentResult?.decision === TaskResultDecision.Approved:
+      case this.result?.decision === TaskResultDecision.Approved:
         return TaskStatus.Approved;
-      case currentResult?.decision === TaskResultDecision.Rejected:
+      case this.result?.decision === TaskResultDecision.Rejected:
         return TaskStatus.Rejected;
       case !this.isAdmin &&
         !this.task.allowMultipleCompletitions &&

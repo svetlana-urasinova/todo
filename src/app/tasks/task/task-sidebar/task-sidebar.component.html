@@ -1,4 +1,4 @@
-<div class="task-sidebar">
+<div class="task-sidebar" [class.outdated]="isOutdated">
   <div class="task-sidebar-cost">
     <div class="task-sidebar-icon-container">
       <img class="task-sidebar-icon" src="{{ iconBaseUrl }}game.svg" />
@@ -19,9 +19,6 @@
     <div class="task-sidebar-icon-container">
       <img class="task-sidebar-icon" src="{{ iconBaseUrl }}calendar.svg" />
     </div>
-    Срок:
-    <span class="task-sidebar-date-value">{{
-      task.due_date | date_or_time
-    }}</span>
+    Срок: {{ task.due_date | date_or_time }}
   </div>
 </div>

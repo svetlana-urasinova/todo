@@ -1,62 +1,49 @@
 .task {
-  position: relative;
-  transition: 0.5s;
-  transform-style: preserve-3d;
+  perspective: 1000;
+  -webkit-perspective: 1000;
 
-  &.active {
-    transform: rotateY(180deg);
-  }
+  &-card {
+    position: relative;
+    transition: 0.5s;
+    transform-style: preserve-3d;
 
-  &-container {
-    perspective: 1000;
-    -webkit-perspective: 1000;
-  }
-
-  &-content,
-  &-menu {
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-
-    background-color: var(--task);
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    font-size: 15px;
-    gap: var(--padding-small);
-    padding: var(--padding-small) var(--padding);
-  }
-
-  &-menu {
-    align-items: center;
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    left: 0;
-    padding: var(--padding-small);
-    position: absolute;
-    top: 0;
-    transform: rotateY(-180deg);
-    -webkit-transform: rotateY(-180deg);
-    width: 100%;
-
-    &-content {
-      align-items: center;
-      display: flex;
-      gap: 4px;
-      justify-content: center;
-      width: 100%;
+    &.active {
+      transform: rotateY(180deg);
     }
 
-    &-user {
-      flex: auto;
-      padding: 0;
+    &-front,
+    &-back {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      cursor: pointer;
+    }
+
+    &-front {
+      transform: rotateY(0deg);
+      -webkit-transform: rotateY(0deg);
+    }
+
+    &-back {
+      height: 100%;
+      left: 0;
+      transform: rotateY(-180deg);
+      -webkit-transform: rotateY(-180deg);
+      position: absolute;
+      top: 0;
+      width: 100%;
     }
   }
 
   &-content {
-    transform: rotateY(0deg);
-    -webkit-transform: rotateY(0deg);
+    background-color: var(--task);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    gap: var(--padding-small);
+    height: 100%;
+    padding: var(--padding-small) var(--padding);
+    width: 100%;
 
     &:hover:not(.disabled) {
       background-color: var(--task-dark);
@@ -65,11 +52,6 @@
     &.outdated {
       border: 4px solid var(--outdated);
       opacity: 0.4;
-
-      .task-extra-due-date-value {
-        color: var(--outdated-text);
-        font-weight: 600;
-      }
     }
 
     &.done {
@@ -113,23 +95,5 @@
     &.disabled {
       cursor: default;
     }
-  }
-
-  &-results {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    &-name {
-      font-weight: 500;
-      margin-left: 4px;
-    }
-    // &-approved {
-    //   background-color: var(--success-light);
-    // }
-
-    // &-rejected {
-    //   background-color: var(--danger-light);
-    // }
   }
 }
