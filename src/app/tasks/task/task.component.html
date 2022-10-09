@@ -50,7 +50,7 @@
           <div class="task-extra-icon-container">
             <img class="task-extra-icon" src="{{ iconBaseUrl }}game.svg" />
           </div>
-          {{ task.cost | time }}
+          {{ task.cost || 0 | time }}
         </div>
         <div
           class="task-extra-status"

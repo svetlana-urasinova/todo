@@ -4,7 +4,7 @@ export interface Task {
   title: string;
   desc?: string;
   due_date?: Date;
-  cost: number;
+  cost?: number;
   allowMultipleCompletitions?: boolean;
   period?: TaskPeriod;
   results: TaskResult[];
