@@ -1,0 +1,41 @@
+.task-sidebar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 13px;
+  gap: var(--padding-small);
+  justify-content: flex-start;
+
+  &-icon {
+    display: block;
+    height: 100%;
+    width: 100%;
+
+    &-container {
+      height: 16px;
+      margin-right: 6px;
+      width: 16px;
+    }
+  }
+
+  &-cost,
+  &-status,
+  &-date {
+    align-items: center;
+    display: flex;
+  }
+
+  &-cost {
+    width: 100px;
+  }
+
+  &-status {
+    width: 150px;
+  }
+
+  &-date {
+    &-value {
+      margin-left: 4px;
+    }
+  }
+}

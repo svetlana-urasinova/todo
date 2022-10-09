@@ -98,4 +98,8 @@ export class TaskService {
 
     this.tasksWereUpdated$.next([...this.tasks]);
   }
+
+  public deleteTask(currentTask: Task): void {
+    this.tasks = this.tasks.filter((task: Task) => task.id !== currentTask.id);
+  }
 }

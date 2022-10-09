@@ -1,21 +1,21 @@
 <div class="task-header">
   <div
     class="task-header-approve"
-    [class.approved]="isApproved"
-    [class.unapproved]="isUnapproved"
+    [class.approved]="status === taskStatusValue.Approved"
+    [class.unapproved]="status === taskStatusValue.Rejected"
     *ngIf="!isAdmin"
   >
     <img
       class="task-header-approve-icon"
       src="{{ iconBaseUrl }}check.png"
       alt="Done!"
-      *ngIf="isApproved"
+      *ngIf="status === taskStatusValue.Approved"
     />
     <img
       class="task-header-approve-icon"
       src="{{ iconBaseUrl }}cross.png"
       alt="Try again!"
-      *ngIf="isUnapproved"
+      *ngIf="status === taskStatusValue.Rejected"
     />
   </div>
   <span class="task-header-category">

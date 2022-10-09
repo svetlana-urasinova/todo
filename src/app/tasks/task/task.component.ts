@@ -1,12 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  Task,
-  TaskResult,
-  TaskStatus,
-  TaskStatusValue,
-  User,
-} from 'src/shared/types';
+import { Task, TaskResult, TaskStatus, User } from 'src/shared/types';
 import { ButtonComponent, ImgComponent } from 'src/shared/components';
 import { TaskService, UserService } from 'src/shared/services';
 import dayjs from 'dayjs';
@@ -25,6 +19,7 @@ import {
   UsernamesPipe,
 } from 'src/shared/pipes';
 import { TaskHeaderComponent } from './task-header/task-header.component';
+import { TaskSidebarComponent } from './task-sidebar/task-sidebar.component';
 
 @Component({
   standalone: true,
@@ -32,6 +27,7 @@ import { TaskHeaderComponent } from './task-header/task-header.component';
     CommonModule,
     ReactiveFormsModule,
     TaskHeaderComponent,
+    TaskSidebarComponent,
     ButtonComponent,
     ImgComponent,
     DateOrTimePipe,
@@ -68,6 +64,8 @@ export class TaskComponent implements OnInit {
   public approvedFor: User[] = [];
   public rejectedFor: User[] = [];
 
+  public taskStatus = TaskStatus;
+
   public showMenu = false;
 
   constructor(
@@ -93,28 +91,18 @@ export class TaskComponent implements OnInit {
     this.rejectedFor = this.getReviewedUsers({ approved: false });
 
     if (this.isAdmin) {
-      this.isDone = this.isTaskDone();
-      this.isReviewed = this.isTaskReviewed();
-      this.isApproved = this.isTaskApproved();
-      this.isUnapproved = this.isTaskUnapproved();
-
       this.form.controls.selected_user.valueChanges.subscribe(() => {
-        this.isApproved = this.isTaskApproved();
-        this.isUnapproved = this.isTaskUnapproved();
+        this.status = this.getTaskStatus();
       });
+
+      this.isReviewed = this.isTaskReviewed();
     } else {
       this.result =
         this.task.results.find(
           (result: TaskResult) => result.userId === this.userId
         ) || null;
-
-      this.isDone = this.isTaskDone();
-      this.isApproved = this.isTaskApproved();
-      this.isUnapproved = this.isTaskUnapproved();
-      this.isBlocked = this.isTaskBlocked();
-
-      this.status = this.getTaskStatus();
     }
+    this.status = this.getTaskStatus();
 
     this.isDisabled = this.isTaskDisabled();
   }
@@ -202,42 +190,6 @@ export class TaskComponent implements OnInit {
       );
   }
 
-  private isTaskApproved(): boolean {
-    if (this.isAdmin) {
-      const currentUserId = this.form.controls.selected_user.value;
-
-      if (!currentUserId) {
-        return false;
-      }
-
-      const currentResult = this.task.results.find(
-        (result: TaskResult) => result.userId === currentUserId
-      );
-
-      return !!currentResult?.approved;
-    } else {
-      return !!this.result?.approved;
-    }
-  }
-
-  private isTaskUnapproved(): boolean {
-    if (this.isAdmin) {
-      const currentUserId = this.form.controls.selected_user.value;
-
-      if (!currentUserId) {
-        return false;
-      }
-
-      const currentResult = this.task.results.find(
-        (result: TaskResult) => result.userId === currentUserId
-      );
-
-      return !!currentResult?.adminId && currentResult?.approved === false;
-    } else {
-      return !!this.result?.adminId && !this.isApproved;
-    }
-  }
-
   private isTaskDisabled(): boolean {
     if (this.isAdmin) {
       return this.task.results.length === 0;
@@ -246,17 +198,9 @@ export class TaskComponent implements OnInit {
     }
   }
 
-  private isTaskDone(): boolean {
-    if (this.isAdmin) {
-      return this.task.results.length > 0;
-    } else {
-      return !!this.result;
-    }
-  }
-
   private isTaskReviewed(): boolean {
     return (
-      this.isDone &&
+      this.task.results.length > 0 &&
       isEqual(
         sortBy(this.doneByUsers, ['id']),
         sortBy([...this.approvedFor, ...this.rejectedFor], 'id')
@@ -264,30 +208,48 @@ export class TaskComponent implements OnInit {
     );
   }
 
-  private isTaskBlocked(): boolean {
-    return (
-      !this.task.allowMultipleCompletitions &&
-      this.doneByUsers.length > 0 &&
-      this.doneByUsers[0].id !== this.userId
-    );
-  }
-
   private getTaskStatus(): TaskStatus {
     if (this.isAdmin) {
-      return { value: TaskStatusValue.Default };
+      const currentUserId = this.form.controls.selected_user.value;
+      const currentResult = this.getResultForUser(currentUserId);
+
+      switch (true) {
+        case currentResult?.approved:
+          return TaskStatus.Approved;
+        case currentResult?.adminId && !currentResult.approved:
+          return TaskStatus.Rejected;
+        case this.task.results.length > 0:
+          return TaskStatus.Done;
+        default:
+          return TaskStatus.Default;
+      }
+    } else {
+      switch (true) {
+        case this.result?.approved:
+          return TaskStatus.Approved;
+        case this.result?.adminId && !this.result?.approved:
+          return TaskStatus.Rejected;
+        case !this.task.allowMultipleCompletitions &&
+          this.doneByUsers.length > 0 &&
+          this.doneByUsers[0].id !== this.userId:
+          return TaskStatus.Blocked;
+        case !!this.result:
+          return TaskStatus.Done;
+        default:
+          return TaskStatus.Default;
+      }
+    }
+  }
+
+  private getResultForUser(userId: string): TaskResult | null {
+    if (userId === null || userId === undefined) {
+      return null;
     }
 
-    switch (true) {
-      case this.isApproved:
-        return { value: TaskStatusValue.Approved, icon: 'check' };
-      case this.result?.adminId && !this.isApproved:
-        return { value: TaskStatusValue.Rejected, icon: 'cross' };
-      case this.isBlocked:
-        return { value: TaskStatusValue.Blocked, icon: 'not-allowed' };
-      case this.isDone:
-        return { value: TaskStatusValue.Done, icon: 'hourglass' };
-      default:
-        return { value: TaskStatusValue.Default };
-    }
+    return (
+      this.task.results.find(
+        (result: TaskResult) => result.userId === userId
+      ) || null
+    );
   }
 }

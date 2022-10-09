@@ -17,9 +17,42 @@ export interface TaskResult {
   amount?: number;
 }
 
-export interface TaskStatus {
-  value: TaskStatusValue;
-  icon?: string;
+export enum TaskStatusValue {
+  Done = 'done',
+  Blocked = 'blocked',
+  Approved = 'approved',
+  Rejected = 'rejected',
+  Default = 'default',
+}
+
+export class TaskStatus {
+  static readonly Approved = new TaskStatus(
+    TaskStatusValue.Approved,
+    'Одобрено',
+    'check.svg'
+  );
+  static readonly Blocked = new TaskStatus(
+    TaskStatusValue.Blocked,
+    'Уже сделано',
+    'not-allowed.svg'
+  );
+  static readonly Done = new TaskStatus(
+    TaskStatusValue.Done,
+    'Одобрено',
+    'check.svg'
+  );
+  static readonly Rejected = new TaskStatus(
+    TaskStatusValue.Rejected,
+    'Отклонено',
+    'cross.svg'
+  );
+  static readonly Default = new TaskStatus(TaskStatusValue.Default, '', null);
+
+  private constructor(
+    public readonly value: TaskStatusValue,
+    public readonly text: string,
+    public readonly icon: string | null
+  ) {}
 }
 
 export enum TaskCaterogy {
@@ -34,12 +67,4 @@ export enum TaskPeriod {
   Week = 'week',
   Month = 'month',
   Year = 'year',
-}
-
-export enum TaskStatusValue {
-  Done = 'done',
-  Blocked = 'blocked',
-  Approved = 'approved',
-  Rejected = 'rejected',
-  Default = 'default',
 }
