@@ -1,0 +1,24 @@
+<div class="task-sidebar" [class.outdated]="isOutdated">
+  <div class="task-sidebar-cost">
+    <div class="task-sidebar-icon-container">
+      <img class="task-sidebar-icon" src="{{ iconBaseUrl }}game.svg" />
+    </div>
+    {{ task.cost || 0 | time }}
+  </div>
+  <div
+    class="task-sidebar-status"
+    *ngIf="!isAdmin && status.value !== taskStatus.Default.value"
+  >
+    <div class="task-sidebar-icon-container">
+      <img class="task-sidebar-icon" src="{{ iconBaseUrl }}{{ status.icon }}" />
+    </div>
+    {{ status.text }}
+  </div>
+
+  <div class="task-sidebar-date" *ngIf="task.due_date">
+    <div class="task-sidebar-icon-container">
+      <img class="task-sidebar-icon" src="{{ iconBaseUrl }}calendar.svg" />
+    </div>
+    Срок: {{ task.due_date | date_or_time }}
+  </div>
+</div>

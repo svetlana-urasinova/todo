@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Task, TaskCaterogy, TaskPeriod } from '../types';
+import { Task, TaskCaterogy, TaskPeriod, TaskResultDecision } from '../types';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -25,7 +25,7 @@ export class TaskService {
         {
           userId: '1',
           adminId: '3',
-          approved: false,
+          decision: TaskResultDecision.Rejected,
         },
       ],
     },
@@ -45,8 +45,8 @@ export class TaskService {
       allowMultipleCompletitions: true,
       period: TaskPeriod.Week,
       results: [
-        { userId: '1', adminId: '3', approved: true },
-        { userId: '2', adminId: '3', approved: false },
+        { userId: '1', adminId: '3', decision: TaskResultDecision.Approved },
+        { userId: '2', adminId: '3', decision: TaskResultDecision.Rejected },
       ],
     },
     {
@@ -97,5 +97,9 @@ export class TaskService {
     });
 
     this.tasksWereUpdated$.next([...this.tasks]);
+  }
+
+  public deleteTask(currentTask: Task): void {
+    this.tasks = this.tasks.filter((task: Task) => task.id !== currentTask.id);
   }
 }

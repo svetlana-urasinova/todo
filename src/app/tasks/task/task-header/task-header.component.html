@@ -1,0 +1,36 @@
+<div class="task-header">
+  <div
+    class="task-header-approve"
+    [class.approved]="status.value === taskStatus.Approved.value"
+    [class.rejected]="status.value === taskStatus.Rejected.value"
+    *ngIf="!isAdmin"
+  >
+    <img
+      class="task-header-approve-icon"
+      src="{{ iconBaseUrl }}check.png"
+      alt="Done!"
+      *ngIf="status.value === taskStatus.Approved.value"
+    />
+    <img
+      class="task-header-approve-icon"
+      src="{{ iconBaseUrl }}cross.png"
+      alt="Try again!"
+      *ngIf="status.value === taskStatus.Rejected.value"
+    />
+  </div>
+  <span class="task-header-category">
+    <img
+      class="task-header-category-icon"
+      src="{{ iconBaseUrl }}categories/{{ task.category || defaultIcon }}.png"
+      [alt]="task.category"
+    />
+  </span>
+  <div class="task-header-content">
+    <h3 class="task-header-content-title">
+      {{ task.title }}
+    </h3>
+    <div class="task-header-content-desc" *ngIf="task.desc">
+      {{ task.desc }}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="task-results" *ngIf="task.results.length > 0">
+  <div class="task-results-done" *ngIf="task.results.length > 0">
+    Выполнено:
+    <span class="task-results-name">
+      {{ doneByUsers | usernames }}
+    </span>
+  </div>
+  <div class="task-results-approved" *ngIf="approvedFor.length > 0">
+    Одобрено:
+    <span class="task-results-name">
+      {{ approvedFor | usernames }}
+    </span>
+  </div>
+  <div class="task-results-rejected" *ngIf="rejectedFor.length > 0">
+    Отклонено:
+    <span class="task-results-name">
+      {{ rejectedFor | usernames }}
+    </span>
+  </div>
+</div>

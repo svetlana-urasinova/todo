@@ -1,62 +1,49 @@
 .task {
-  position: relative;
-  transition: 0.5s;
-  transform-style: preserve-3d;
+  perspective: 1000;
+  -webkit-perspective: 1000;
 
-  &.active {
-    transform: rotateY(180deg);
-  }
+  &-card {
+    position: relative;
+    transition: 0.5s;
+    transform-style: preserve-3d;
 
-  &-container {
-    perspective: 1000;
-    -webkit-perspective: 1000;
-  }
-
-  &-content,
-  &-menu {
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-
-    background-color: var(--task);
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    font-size: 15px;
-    gap: var(--padding-small);
-    padding: var(--padding-small) var(--padding);
-  }
-
-  &-menu {
-    align-items: center;
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    left: 0;
-    padding: var(--padding-small);
-    position: absolute;
-    top: 0;
-    transform: rotateY(-180deg);
-    -webkit-transform: rotateY(-180deg);
-    width: 100%;
-
-    &-content {
-      align-items: center;
-      display: flex;
-      gap: 4px;
-      justify-content: center;
-      width: 100%;
+    &.active {
+      transform: rotateY(180deg);
     }
 
-    &-user {
-      flex: auto;
-      padding: 0;
+    &-front,
+    &-back {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      cursor: pointer;
+    }
+
+    &-front {
+      transform: rotateY(0deg);
+      -webkit-transform: rotateY(0deg);
+    }
+
+    &-back {
+      height: 100%;
+      left: 0;
+      transform: rotateY(-180deg);
+      -webkit-transform: rotateY(-180deg);
+      position: absolute;
+      top: 0;
+      width: 100%;
     }
   }
 
   &-content {
-    transform: rotateY(0deg);
-    -webkit-transform: rotateY(0deg);
+    background-color: var(--task);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    gap: var(--padding-small);
+    height: 100%;
+    padding: var(--padding-small) var(--padding);
+    width: 100%;
 
     &:hover:not(.disabled) {
       background-color: var(--task-dark);
@@ -65,11 +52,6 @@
     &.outdated {
       border: 4px solid var(--outdated);
       opacity: 0.4;
-
-      .task-extra-due-date-value {
-        color: var(--outdated-text);
-        font-weight: 600;
-      }
     }
 
     &.done {
@@ -80,22 +62,11 @@
       }
     }
 
-    &.approved,
-    &.unapproved {
-      .task-header-approve {
-        display: block;
-      }
-
-      .task-category {
-        opacity: 0.4;
-      }
-    }
-
-    &.unapproved {
-      background-color: var(--unapproved);
+    &.rejected {
+      background-color: var(--rejected);
 
       &:hover:not(.disabled) {
-        background-color: var(--unapproved-dark);
+        background-color: var(--rejected-dark);
       }
     }
 
@@ -117,118 +88,12 @@
 
     &.blocked {
       background-color: var(--grey-light);
-      border: 4px solid var(--done);
+      border: 4px solid var(--blocked);
       opacity: 0.4;
     }
 
     &.disabled {
       cursor: default;
     }
-  }
-
-  &-header {
-    align-items: center;
-    display: flex;
-    gap: var(--padding-small);
-    position: relative;
-
-    &-approve {
-      display: none;
-      left: 9px;
-      position: absolute;
-      top: 9px;
-      z-index: 1000;
-
-      &-icon {
-        height: 32px;
-        width: 32px;
-      }
-    }
-  }
-
-  &-title {
-    font-size: 18px;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-    margin: 0;
-  }
-
-  &-desc {
-    color: var(--text-light);
-    margin-top: 4px;
-  }
-
-  &-category {
-    background-color: var(--white);
-    border: 1px solid var(--text-pale);
-    border-radius: 50%;
-    padding: 8px;
-
-    &-icon {
-      display: block;
-      margin: 0 auto;
-      max-height: 32px;
-      max-width: 32px;
-    }
-  }
-
-  &-extra {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    font-size: 13px;
-    gap: var(--padding-small);
-    justify-content: flex-start;
-
-    &-icon {
-      display: block;
-      height: 100%;
-      width: 100%;
-
-      &-container {
-        height: 16px;
-        margin-right: 6px;
-        width: 16px;
-      }
-    }
-
-    &-cost,
-    &-status,
-    &-due-date {
-      align-items: center;
-      display: flex;
-    }
-
-    &-cost {
-      width: 100px;
-    }
-
-    &-status {
-      width: 150px;
-    }
-
-    &-due-date {
-      &-value {
-        margin-left: 4px;
-      }
-    }
-  }
-
-  &-results {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    &-name {
-      font-weight: 500;
-      margin-left: 4px;
-    }
-    // &-approved {
-    //   background-color: var(--success-light);
-    // }
-
-    // &-rejected {
-    //   background-color: var(--danger-light);
-    // }
   }
 }
