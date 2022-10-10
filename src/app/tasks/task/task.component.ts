@@ -103,7 +103,6 @@ export class TaskComponent implements OnInit {
     this.isDisabled = this.isTaskDisabled();
 
     this.status = this.getTaskStatus();
-    console.log(this.status);
   }
 
   public flip(): void {
