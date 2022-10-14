@@ -15,28 +15,28 @@
         [class.outdated]="isOutdated"
         [class.disabled]="isDisabled"
       >
-        <app-task-header [task]="task" [status]="status"></app-task-header>
-        <app-task-sidebar
+        <task-header [task]="task" [status]="status"></task-header>
+        <task-sidebar
           [task]="task"
           [status]="status"
           [isOutdated]="isOutdated"
-        ></app-task-sidebar>
-        <app-task-results
+        ></task-sidebar>
+        <task-results
           [task]="task"
           [doneByUsers]="doneByUsers"
           [approvedFor]="approvedFor"
           [rejectedFor]="rejectedFor"
           *ngIf="isAdmin"
-        ></app-task-results>
+        ></task-results>
       </div>
     </div>
     <div class="task-card-back" [formGroup]="form" (click)="flip()">
-      <app-task-menu
+      <task-menu
         [task]="task"
         [result]="result"
         [status]="status"
         [doneByUsers]="doneByUsers"
-      ></app-task-menu>
+      ></task-menu>
     </div>
   </div>
 </li>

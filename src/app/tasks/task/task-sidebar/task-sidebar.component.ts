@@ -7,7 +7,7 @@ import { Task, TaskStatus } from 'src/shared/types';
 @Component({
   standalone: true,
   imports: [CommonModule, TimePipe, DateOrTimePipe],
-  selector: 'app-task-sidebar',
+  selector: 'task-sidebar',
   templateUrl: './task-sidebar.component.html',
   styleUrls: ['./task-sidebar.component.scss'],
 })

@@ -6,7 +6,7 @@ import { Task, User } from 'src/shared/types';
 @Component({
   standalone: true,
   imports: [CommonModule, UsernamesPipe],
-  selector: 'app-task-results',
+  selector: 'task-results',
   templateUrl: './task-results.component.html',
   styleUrls: ['./task-results.component.scss'],
 })

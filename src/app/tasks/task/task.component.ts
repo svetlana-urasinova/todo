@@ -35,7 +35,7 @@ import { TaskMenuComponent } from './task-menu/task-menu.component';
     TaskMenuComponent,
     ButtonComponent,
   ],
-  selector: 'app-task',
+  selector: 'task',
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss'],
 })

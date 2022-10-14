@@ -28,7 +28,7 @@ import {
       useExisting: FormGroupDirective,
     },
   ],
-  selector: 'app-task-menu',
+  selector: 'task-menu',
   templateUrl: './task-menu.component.html',
   styleUrls: ['./task-menu.component.scss'],
 })

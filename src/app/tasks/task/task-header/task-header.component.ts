@@ -7,7 +7,7 @@ import { Task, TaskStatus } from 'src/shared/types';
 @Component({
   standalone: true,
   imports: [CommonModule, ImgComponent],
-  selector: 'app-task-header',
+  selector: 'task-header',
   templateUrl: './task-header.component.html',
   styleUrls: ['./task-header.component.scss'],
 })
