@@ -33,10 +33,16 @@
   --info: #1976d2;
   --info-dark: #1565c0;
   --info-light: #1e88e5;
+
   --box-shadow-basic: 0 2px 5px var(--shadow);
   --box-shadow-light: 0px 8px 24px var(--shadow);
   --border-basic: 1px solid var(--grey-dark);
   --transition-basic: all 0.2s ease-in-out;
+
+  --border-radius-s: 4px;
+  --border-radius-m: 6px;
+  --border-radius-l: 8px;
+  --border-radius-xl: 10px;
   --padding: 40px;
   --padding-small: 20px;
 

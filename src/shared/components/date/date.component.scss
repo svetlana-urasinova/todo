@@ -1,7 +1,7 @@
 .styled-date {
   background-color: var(--white);
   border: var(--border-basic);
-  border-radius: 6px;
+  border-radius: var(--border-radius-m);
   color: var(--text);
   display: flex;
   justify-content: flex-start;

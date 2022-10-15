@@ -1,7 +1,7 @@
 .task-menu {
   align-items: center;
   background-color: var(--task);
-  border-radius: 6px;
+  border-radius: var(--border-radius-m);
   display: flex;
   gap: 4px;
   font-size: 15px;

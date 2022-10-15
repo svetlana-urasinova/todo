@@ -13,7 +13,7 @@
 .styled-form-input,
 .styled-form-textarea {
   border: var(--border-basic);
-  border-radius: 6px;
+  border-radius: var(--border-radius-m);
   color: var(--text);
   font: normal 16px "Montserrat", sans-serif;
   height: 42px;
@@ -63,7 +63,7 @@
       --border: var(--primary);
       background-color: var(--background);
       border: 2px solid var(--border);
-      border-radius: 4px;
+      border-radius: var(--border-radius-s);
       height: 16px;
       width: 16px;
     }
