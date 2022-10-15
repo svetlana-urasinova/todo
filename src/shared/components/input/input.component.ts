@@ -77,7 +77,6 @@ export class InputComponent implements OnInit, OnDestroy, ControlValueAccessor {
     this.form.controls.value.valueChanges
       .pipe(takeUntil(this.component$))
       .subscribe((value: string | number) => {
-        this.error = false;
         this.value = this.type === InputTypes.Number ? Number(value) : value;
       });
 
