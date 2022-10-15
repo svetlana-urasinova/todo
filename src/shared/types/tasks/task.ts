@@ -5,7 +5,8 @@ export interface Task {
   desc?: string;
   due_date?: Date;
   cost?: number;
-  allowMultipleCompletitions?: boolean;
+  repeatable: boolean;
+  maxRepeats?: number;
   period: TaskPeriod;
   results: TaskResult[];
 }
@@ -14,7 +15,7 @@ export interface TaskResult {
   userId: string;
   adminId?: string;
   decision?: TaskResultDecision;
-  amount?: number;
+  repeats: number;
 }
 
 export enum TaskResultDecision {
@@ -44,7 +45,7 @@ export class TaskStatus {
   static readonly Done = new TaskStatus(
     TaskStatusValue.Done,
     'На проверке',
-    'check.svg'
+    'hourglass.svg'
   );
   static readonly Rejected = new TaskStatus(
     TaskStatusValue.Rejected,

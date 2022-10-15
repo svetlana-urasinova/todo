@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import {
   Task,
   TaskResult,
@@ -39,7 +39,7 @@ import { TaskMenuComponent } from './task-menu/task-menu.component';
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss'],
 })
-export class TaskComponent implements OnInit {
+export class TaskComponent implements OnInit, OnChanges {
   @ViewChild(TaskMenuComponent) taskMenuComponent: TaskMenuComponent;
 
   @Input() public task: Task;
@@ -96,13 +96,15 @@ export class TaskComponent implements OnInit {
       this.isReviewed = this.isTaskReviewed();
     } else {
       this.result = this.getResultForUser(this.userId);
-
-      this.status = this.getTaskStatus();
     }
 
-    this.isDisabled = this.isTaskDisabled();
-
     this.status = this.getTaskStatus();
+    this.isDisabled = this.isTaskDisabled();
+  }
+
+  public ngOnChanges(): void {
+    this.status = this.getTaskStatus();
+    this.isDisabled = this.isTaskDisabled();
   }
 
   public flip(): void {
@@ -167,7 +169,7 @@ export class TaskComponent implements OnInit {
       case this.result?.decision === TaskResultDecision.Rejected:
         return TaskStatus.Rejected;
       case !this.isAdmin &&
-        !this.task.allowMultipleCompletitions &&
+        !this.task.maxRepeats &&
         this.doneByUsers[0].id !== this.userId:
         return TaskStatus.Blocked;
       default:

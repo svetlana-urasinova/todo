@@ -1,4 +1,8 @@
-<div class="task-sidebar" [class.outdated]="isOutdated">
+<div
+  class="task-sidebar"
+  title="Награда за задание"
+  [class.outdated]="isOutdated"
+>
   <div class="task-sidebar-cost">
     <div class="task-sidebar-icon-container">
       <img class="task-sidebar-icon" src="{{ iconBaseUrl }}game.svg" />
@@ -7,6 +11,7 @@
   </div>
   <div
     class="task-sidebar-status"
+    title="Статус задания"
     *ngIf="!isAdmin && status.value !== taskStatus.Default.value"
   >
     <div class="task-sidebar-icon-container">
@@ -15,10 +20,27 @@
     {{ status.text }}
   </div>
 
-  <div class="task-sidebar-date" *ngIf="task.due_date">
+  <div
+    class="task-sidebar-repeats"
+    *ngIf="task.repeatable && result?.repeats > 0"
+  >
+    <div class="task-sidebar-icon-container">
+      <img class="task-sidebar-icon" src="{{ iconBaseUrl }}checklist.svg" />
+    </div>
+    {{ result.repeats }}
+    <ng-container *ngIf="task.maxRepeats > 1">
+      / {{ task.maxRepeats }}</ng-container
+    >
+  </div>
+
+  <div
+    class="task-sidebar-date"
+    title="Выполнить до указанной даты"
+    *ngIf="task.due_date"
+  >
     <div class="task-sidebar-icon-container">
       <img class="task-sidebar-icon" src="{{ iconBaseUrl }}calendar.svg" />
     </div>
-    Срок: {{ task.due_date | date_or_time }}
+    {{ task.due_date | date_or_time }}
   </div>
 </div>

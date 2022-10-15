@@ -99,7 +99,7 @@
     </styled-checkbox>
 
     <styled-checkbox (onValueChange)="updateDueDate($event)">
-      Выполнить в срок
+      Срок выполнения
     </styled-checkbox>
     <ng-container *ngIf="hasDueDate">
       <styled-date
@@ -107,7 +107,8 @@
         [error]="
           !!(
             (error && form.controls.due_date.errors) ||
-            form.controls.due_date.errors?.invalidDate
+            form.controls.due_date.errors?.invalidDate ||
+            form.controls.due_date.errors?.isBeforeToday
           )
         "
       ></styled-date>
@@ -159,7 +160,7 @@
     </ng-container>
 
     <styled-checkbox formControlName="allowMultipleCompletitions">
-      Разрешить выполнять несколько раз
+      Можно выполнить несколько раз
     </styled-checkbox>
 
     <div class="task-edit-buttons">

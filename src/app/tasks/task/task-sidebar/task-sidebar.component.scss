@@ -20,7 +20,8 @@
 
   &-cost,
   &-status,
-  &-date {
+  &-date,
+  &-repeats {
     align-items: center;
     display: flex;
   }
@@ -37,6 +38,11 @@
     &-value {
       margin-left: 4px;
     }
+  }
+
+  &-repeats {
+    font-weight: 500;
+    width: 75px;
   }
 
   &.outdated {

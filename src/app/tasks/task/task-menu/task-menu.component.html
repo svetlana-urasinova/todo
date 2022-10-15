@@ -32,17 +32,30 @@
   <ng-container *ngIf="!isAdmin">
     <styled-button
       color="green"
-      [isDisabled]="status.value === taskStatus.Done.value"
+      [isDisabled]="!task.repeatable && status.value === taskStatus.Done.value"
       (click)="markAsDone()"
+      *ngIf="!task.repeatable || !result || status === taskStatus.Rejected"
     >
       Уже готово!
     </styled-button>
+
+    <styled-button
+      color="green"
+      [isDisabled]="repeats === task.maxRepeats"
+      (click)="markAsDone()"
+      *ngIf="
+        task.repeatable && result?.repeats > 0 && status !== taskStatus.Rejected
+      "
+    >
+      И ещё раз!
+    </styled-button>
+
     <styled-button
       color="red"
       [isDisabled]="status.value !== taskStatus.Done.value"
       (click)="markAsNotDone()"
     >
-      Ой, ещё нет
+      Ещё не готово
     </styled-button>
   </ng-container>
 </div>

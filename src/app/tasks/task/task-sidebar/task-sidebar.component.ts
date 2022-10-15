@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { DateOrTimePipe, TimePipe } from 'src/shared/pipes';
 import { AuthService, NavigationService } from 'src/shared/services';
-import { Task, TaskStatus } from 'src/shared/types';
+import { Task, TaskResult, TaskStatus } from 'src/shared/types';
 
 @Component({
   standalone: true,
@@ -13,6 +13,7 @@ import { Task, TaskStatus } from 'src/shared/types';
 })
 export class TaskSidebarComponent implements OnInit {
   @Input() public task: Task;
+  @Input() public result: TaskResult;
   @Input() public status: TaskStatus;
   @Input() public isOutdated = false;
 

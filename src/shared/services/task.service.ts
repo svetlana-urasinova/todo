@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Task, TaskCategory, TaskPeriod, TaskResultDecision } from '../types';
+import {
+  Task,
+  TaskCategory,
+  TaskPeriod,
+  TaskResult,
+  TaskResultDecision,
+} from '../types';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -12,6 +18,7 @@ export class TaskService {
       category: TaskCategory.Kitchen,
       title: 'Разобрать посудомойку',
       cost: 15,
+      repeatable: false,
       due_date: new Date('2022-10-05'),
       period: TaskPeriod.Day,
       results: [],
@@ -21,12 +28,14 @@ export class TaskService {
       category: TaskCategory.Other,
       title: 'Приготовить обед',
       cost: 30,
+      repeatable: false,
       period: TaskPeriod.NoRepeat,
       results: [
         {
           userId: '1',
           adminId: '3',
           decision: TaskResultDecision.Rejected,
+          repeats: 1,
         },
       ],
     },
@@ -35,6 +44,7 @@ export class TaskService {
       title: 'Разобрать сушилку',
       category: TaskCategory.Laundry,
       cost: 40,
+      repeatable: false,
       period: TaskPeriod.Day,
       results: [],
     },
@@ -44,29 +54,48 @@ export class TaskService {
       desc: 'Награда указана за одну пару обуви',
       category: TaskCategory.Other,
       cost: 15,
-      allowMultipleCompletitions: true,
+      repeatable: true,
+      maxRepeats: 0,
       period: TaskPeriod.Week,
       results: [
-        { userId: '1', adminId: '3', decision: TaskResultDecision.Approved },
-        { userId: '2', adminId: '3', decision: TaskResultDecision.Rejected },
+        {
+          userId: '1',
+          adminId: '3',
+          decision: TaskResultDecision.Approved,
+          repeats: 1,
+        },
+        {
+          userId: '2',
+          adminId: '3',
+          decision: TaskResultDecision.Rejected,
+          repeats: 2,
+        },
       ],
     },
     {
       id: '5',
       title: 'Вынести мусор',
       desc: 'Награда указана за один пакет',
+      due_date: new Date('2023-01-01'),
       category: TaskCategory.Garbage,
       cost: 15,
-      allowMultipleCompletitions: true,
+      repeatable: true,
+      maxRepeats: 3,
       period: TaskPeriod.Day,
-      results: [{ userId: '1' }],
+      results: [
+        {
+          userId: '1',
+          repeats: 2,
+        },
+      ],
     },
     {
       id: '6',
       title: 'Расчесать кошку',
       category: TaskCategory.Other,
       cost: 20,
-      due_date: new Date('2022-10-10 14:00:00'),
+      repeatable: false,
+      due_date: new Date('2023-10-10 14:00:00'),
       period: TaskPeriod.Week,
       results: [],
     },
@@ -75,10 +104,12 @@ export class TaskService {
       title: 'Пропылесосить в детской',
       category: TaskCategory.Kidsroom,
       cost: 20,
+      repeatable: false,
       period: TaskPeriod.Week,
       results: [
         {
           userId: '2',
+          repeats: 1,
         },
       ],
     },
@@ -86,6 +117,17 @@ export class TaskService {
 
   public getAllTasks(): Task[] {
     return this.tasks;
+  }
+
+  public getHowManyTimesTaskIsDone(currentTask: Task): number {
+    if (!currentTask?.results) {
+      return 0;
+    }
+
+    return currentTask.results.reduce(
+      (times: number, result: TaskResult) => times + result.repeats,
+      0
+    );
   }
 
   public saveTask(currentTask: Task): void {

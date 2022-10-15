@@ -7,7 +7,7 @@ export class AuthService {
   private currentUser: User;
 
   public constructor(private readonly userService: UserService) {
-    const currentUser = this.userService.getUser('3');
+    const currentUser = this.userService.getUser('1');
     this.currentUser = currentUser || this.userService.createDefaultUser();
   }
 
