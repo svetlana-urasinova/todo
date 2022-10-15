@@ -1,0 +1,63 @@
+.styled-date {
+  background-color: var(--white);
+  border: var(--border-basic);
+  border-radius: 6px;
+  color: var(--text);
+  display: flex;
+  justify-content: flex-start;
+  min-width: 120px;
+  outline: none;
+  padding: 8px;
+  width: 100%;
+
+  &:hover {
+    border-color: var(--secondary-light);
+  }
+
+  &:focus {
+    border-color: var(--secondary);
+  }
+
+  &.error {
+    border-color: var(--danger);
+  }
+
+  &::placeholder {
+    color: var(--grey-dark);
+  }
+
+  &-group {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+    width: 100%;
+
+    .styled-date-label {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .styled-date-input {
+      background-color: transparent;
+      border: none;
+      font: normal 16px "Montserrat", sans-serif;
+
+      outline: none;
+      text-align: center;
+      width: 34px;
+
+      &-year {
+        text-align: left;
+        width: 68px;
+      }
+    }
+
+    .delimiter {
+      display: block;
+      font-size: 16px;
+      margin: -1px 3px 0;
+      color: var(--text);
+      opacity: 0.4;
+    }
+  }
+}

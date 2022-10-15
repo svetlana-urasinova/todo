@@ -1,0 +1,30 @@
+<div class="styled-date-group" [formGroup]="form">
+  <label class="styled-date-label" *ngIf="label">
+    {{ label }}
+  </label>
+  <div class="styled-date" [class.error]="error">
+    <input
+      formControlName="day"
+      class="styled-date-input styled-date-input-day"
+      placeholder="ДД"
+      type="tel"
+      maxlength="2"
+    />
+    <span class="delimiter">.</span>
+    <input
+      formControlName="month"
+      class="styled-date-input styled-date-input-month"
+      placeholder="ММ"
+      type="tel"
+      maxlength="2"
+    />
+    <span class="delimiter">.</span>
+    <input
+      formControlName="year"
+      class="styled-date-input styled-date-input-year"
+      placeholder="ГГГГ"
+      type="tel"
+      maxlength="4"
+    />
+  </div>
+</div>

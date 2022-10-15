@@ -1,0 +1,12 @@
+<div class="styled-form-group" [formGroup]="form">
+  <label class="styled-form-label">
+    <input
+      type="checkbox"
+      class="styled-form-checkbox-input"
+      formControlName="value"
+    />
+    <span class="styled-form-checkbox-text" [class.error]="error">
+      <ng-content></ng-content>
+    </span>
+  </label>
+</div>

@@ -1,0 +1,151 @@
+<h2 *ngIf="editMode">Редактировать задание</h2>
+<h2 *ngIf="!editMode">Новое задание</h2>
+
+<div class="task-edit">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="styled-form-group">
+      <label for="task-category" class="styled-form-label"> Категория </label>
+      <select
+        class="styled-form-input"
+        formControlName="category"
+        [class.error]="!!(error && form.controls.category.errors)"
+      >
+        <option
+          [value]="taskCategoryValue"
+          *ngFor="let taskCategoryValue of taskCategories; let i = index"
+        >
+          {{ taskCategoryValue | category }}
+        </option>
+      </select>
+      <styled-validation-message
+        [form]="form"
+        inputName="category"
+        [inputError]="['required']"
+        [show]="error"
+      >
+        Выберите хотя бы одну категорию!
+      </styled-validation-message>
+    </div>
+
+    <div class="styled-form-group">
+      <label for="task-title" class="styled-form-label">Задание</label>
+      <textarea
+        formControlName="title"
+        class="styled-form-textarea"
+        id="task-title"
+        [class.error]="!!(error && form.controls.title.errors)"
+      ></textarea>
+      <styled-validation-message
+        [form]="form"
+        inputName="title"
+        [inputError]="['required']"
+        [show]="error"
+      >
+        Название не может быть пустым!
+      </styled-validation-message>
+    </div>
+
+    <div class="styled-form-group">
+      <label for="task-description" class="styled-form-label">Описание</label>
+      <textarea
+        formControlName="desc"
+        class="styled-form-textarea"
+        id="task-description"
+      ></textarea>
+    </div>
+
+    <styled-input
+      formControlName="cost"
+      label="Цена"
+      [error]="
+        !!(
+          (error && form.controls.cost.errors) ||
+          form.controls.cost.errors?.pattern
+        )
+      "
+    ></styled-input>
+    <styled-validation-message
+      [form]="form"
+      inputName="cost"
+      [inputError]="['required']"
+      [show]="error"
+    >
+      Укажите цену!
+    </styled-validation-message>
+    <styled-validation-message
+      [form]="form"
+      inputName="cost"
+      [inputError]="['pattern']"
+    >
+      Некорректная цена!
+    </styled-validation-message>
+
+    <styled-checkbox (onValueChange)="updateDueDate($event)">
+      Выполнить в срок
+    </styled-checkbox>
+    <ng-container *ngIf="hasDueDate">
+      <styled-date
+        formControlName="due_date"
+        [error]="
+          !!(
+            (error && form.controls.due_date.errors) ||
+            form.controls.due_date.errors?.invalidDate
+          )
+        "
+      ></styled-date>
+      <styled-validation-message
+        [form]="form"
+        inputName="due_date"
+        [inputError]="['required']"
+        [show]="error || form.controls.due_date.errors?.invalidDate"
+      >
+        Укажите срок!
+      </styled-validation-message>
+      <styled-validation-message
+        [form]="form"
+        inputName="due_date"
+        [inputError]="['invalidDate']"
+      >
+        Некорректная дата!
+      </styled-validation-message>
+      <styled-validation-message
+        [form]="form"
+        inputName="due_date"
+        [inputError]="['isBeforeToday']"
+        *ngIf="!form.controls.due_date.errors?.invalidDate"
+      >
+        Можно указать только дату в будущем!
+      </styled-validation-message>
+    </ng-container>
+
+    <styled-checkbox (onValueChange)="updatePeriod($event)">
+      Повторять
+    </styled-checkbox>
+    <ng-container *ngIf="isPeriodic">
+      <select class="styled-form-input" formControlName="period">
+        <option
+          [value]="taskPeriodValue"
+          *ngFor="let taskPeriodValue of taskPeriods; let i = index"
+        >
+          {{ taskPeriodValue | period }}
+        </option>
+      </select>
+      <styled-validation-message
+        [form]="form"
+        inputName="period"
+        [inputError]="['required']"
+        [show]="error"
+      >
+        Выберите периодичность!
+      </styled-validation-message>
+    </ng-container>
+
+    <styled-checkbox formControlName="allowMultipleCompletitions">
+      Разрешить выполнять несколько раз
+    </styled-checkbox>
+
+    <div class="task-edit-buttons">
+      <styled-button color="blue" type="submit">Готово</styled-button>
+    </div>
+  </form>
+</div>

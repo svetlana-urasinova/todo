@@ -8,6 +8,7 @@ import {
 
 const initialState: TasksState = {
   tasks: [],
+  currentTask: null,
 };
 
 export function tasksReducer(

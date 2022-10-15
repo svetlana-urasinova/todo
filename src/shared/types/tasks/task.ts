@@ -1,12 +1,12 @@
 export interface Task {
   id: string;
-  category?: TaskCaterogy;
+  category: TaskCategory;
   title: string;
   desc?: string;
   due_date?: Date;
   cost?: number;
   allowMultipleCompletitions?: boolean;
-  period?: TaskPeriod;
+  period: TaskPeriod;
   results: TaskResult[];
 }
 
@@ -60,14 +60,16 @@ export class TaskStatus {
   ) {}
 }
 
-export enum TaskCaterogy {
+export enum TaskCategory {
   Kitchen = 'kitchen',
   Kidsroom = 'kidsroom',
   Laundry = 'laundry',
   Garbage = 'garbage',
+  Other = 'other',
 }
 
 export enum TaskPeriod {
+  NoRepeat = 'no-repeat',
   Day = 'day',
   Week = 'week',
   Month = 'month',

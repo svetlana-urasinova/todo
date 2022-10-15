@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Task, TaskCaterogy, TaskPeriod, TaskResultDecision } from '../types';
+import { Task, TaskCategory, TaskPeriod, TaskResultDecision } from '../types';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -9,7 +9,7 @@ export class TaskService {
   private tasks: Task[] = [
     {
       id: '1',
-      category: TaskCaterogy.Kitchen,
+      category: TaskCategory.Kitchen,
       title: 'Разобрать посудомойку',
       cost: 15,
       due_date: new Date('2022-10-05'),
@@ -18,9 +18,10 @@ export class TaskService {
     },
     {
       id: '2',
-      category: TaskCaterogy.Kitchen,
+      category: TaskCategory.Other,
       title: 'Приготовить обед',
       cost: 30,
+      period: TaskPeriod.NoRepeat,
       results: [
         {
           userId: '1',
@@ -32,7 +33,7 @@ export class TaskService {
     {
       id: '3',
       title: 'Разобрать сушилку',
-      category: TaskCaterogy.Laundry,
+      category: TaskCategory.Laundry,
       cost: 40,
       period: TaskPeriod.Day,
       results: [],
@@ -41,6 +42,7 @@ export class TaskService {
       id: '4',
       title: 'Помыть свою обувь',
       desc: 'Награда указана за одну пару обуви',
+      category: TaskCategory.Other,
       cost: 15,
       allowMultipleCompletitions: true,
       period: TaskPeriod.Week,
@@ -53,7 +55,7 @@ export class TaskService {
       id: '5',
       title: 'Вынести мусор',
       desc: 'Награда указана за один пакет',
-      category: TaskCaterogy.Garbage,
+      category: TaskCategory.Garbage,
       cost: 15,
       allowMultipleCompletitions: true,
       period: TaskPeriod.Day,
@@ -62,6 +64,7 @@ export class TaskService {
     {
       id: '6',
       title: 'Расчесать кошку',
+      category: TaskCategory.Other,
       cost: 20,
       due_date: new Date('2022-10-10 14:00:00'),
       period: TaskPeriod.Week,
@@ -70,7 +73,7 @@ export class TaskService {
     {
       id: '7',
       title: 'Пропылесосить в детской',
-      category: TaskCaterogy.Kidsroom,
+      category: TaskCategory.Kidsroom,
       cost: 20,
       period: TaskPeriod.Week,
       results: [

@@ -18,7 +18,6 @@ export class TaskHeaderComponent implements OnInit {
   public taskStatus = TaskStatus;
 
   public iconBaseUrl: string;
-  public defaultIcon = 'other';
 
   public isAdmin = false;
 

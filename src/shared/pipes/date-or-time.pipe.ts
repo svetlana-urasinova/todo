@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import dayjs, { Dayjs } from 'dayjs';
-import { monthsRu } from '../types';
+import { months } from '../types/l10n/ru';
 
 @Pipe({
   standalone: true,
@@ -25,7 +25,7 @@ export class DateOrTimePipe implements PipeTransform {
 
   private formatDate(date: Dayjs): string {
     const day = date.date();
-    const month = monthsRu[date.month()];
+    const month = months[date.month()];
     const year = date.year();
 
     return `${day} ${month} ${year}`;
