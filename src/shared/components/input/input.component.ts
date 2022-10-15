@@ -46,10 +46,14 @@ export class InputComponent implements OnInit, OnDestroy, ControlValueAccessor {
   @Input() public pattern: string;
   @Input() public minLength = 0;
   @Input() public maxLength: number;
+  @Input() public min: number | null = null;
+  @Input() public max: number | null = null;
+  @Input() public step: number | null = null;
   @Input() public isDisabled = false;
   @Input() public error = false;
 
-  @Output() public onKeyDown: EventEmitter<boolean> = new EventEmitter();
+  @Output() public onFocus: EventEmitter<void> = new EventEmitter();
+  @Output() public onKeyDown: EventEmitter<void> = new EventEmitter();
 
   public form: FormGroup;
 
@@ -88,6 +92,15 @@ export class InputComponent implements OnInit, OnDestroy, ControlValueAccessor {
   public ngOnDestroy(): void {
     this.component$.next(null);
     this.component$.complete();
+  }
+
+  public handleKeyDown(): void {
+    this.onKeyDown.emit();
+  }
+
+  public handleFocus(): void {
+    this.error = false;
+    this.onFocus.emit();
   }
 
   public setDisabledState(isDisabled: boolean): void {

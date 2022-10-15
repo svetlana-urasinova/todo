@@ -1,5 +1,6 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import dayjs from 'dayjs';
+import isNil from 'lodash.isnil';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 dayjs.extend(customParseFormat);
@@ -12,7 +13,7 @@ dayjs.extend(customParseFormat);
 export function isValidDate(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
 
-  if (value == null || value.length === 0) {
+  if (isNil(value) || value.length === 0) {
     return null;
   }
 
@@ -33,7 +34,7 @@ export function isAfterToday(
 
   const today = dayjs();
 
-  if (value == null || value.length === 0) {
+  if (isNil(value) || value.length === 0) {
     return null;
   }
 
@@ -45,14 +46,14 @@ export function isAfterToday(
  * @static
  * @returns {ValidationErrors | null}
  */
- export function isBeforeToday(
+export function isBeforeToday(
   control: AbstractControl
 ): ValidationErrors | null {
   const value = control.value;
 
   const today = dayjs();
 
-  if (value == null || value.length === 0) {
+  if (isNil(value) || value.length === 0) {
     return null;
   }
 

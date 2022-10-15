@@ -1,7 +1,6 @@
-<h2 *ngIf="editMode">Редактировать задание</h2>
-<h2 *ngIf="!editMode">Новое задание</h2>
-
 <div class="task-edit">
+  <h2 *ngIf="!editMode">Новое задание</h2>
+  <h2 *ngIf="editMode">Редактировать задание</h2>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="styled-form-group">
       <label for="task-category" class="styled-form-label"> Категория </label>
@@ -27,28 +26,29 @@
       </styled-validation-message>
     </div>
 
-    <div class="styled-form-group">
-      <label for="task-title" class="styled-form-label">Задание</label>
-      <textarea
-        formControlName="title"
-        class="styled-form-textarea"
-        id="task-title"
-        [class.error]="!!(error && form.controls.title.errors)"
-      ></textarea>
-      <styled-validation-message
-        [form]="form"
-        inputName="title"
-        [inputError]="['required']"
-        [show]="error"
-      >
-        Название не может быть пустым!
-      </styled-validation-message>
-    </div>
+    <styled-input
+      formControlName="title"
+      label="Задание"
+      placeholder="Почистить картошку"
+      [error]="!!(error && form.controls.title.errors)"
+      (onFocus)="resetError()"
+    ></styled-input>
+    <styled-validation-message
+      [form]="form"
+      inputName="title"
+      [inputError]="['required']"
+      [show]="error"
+    >
+      Придумайте задание!
+    </styled-validation-message>
 
     <div class="styled-form-group">
-      <label for="task-description" class="styled-form-label">Описание</label>
+      <label for="task-description" class="styled-form-label">
+        Описание <span class="task-edit-comment">(необязательно)</span>
+      </label>
       <textarea
         formControlName="desc"
+        placeholder="Взять три крупных картофелины и снять с каждой по очереди кожуру"
         class="styled-form-textarea"
         id="task-description"
       ></textarea>
@@ -57,12 +57,17 @@
     <styled-input
       formControlName="cost"
       label="Цена"
+      placeholder="30"
+      type="number"
+      min="5"
+      step="5"
       [error]="
         !!(
           (error && form.controls.cost.errors) ||
           form.controls.cost.errors?.pattern
         )
       "
+      (onFocus)="resetError()"
     ></styled-input>
     <styled-validation-message
       [form]="form"
@@ -79,6 +84,19 @@
     >
       Некорректная цена!
     </styled-validation-message>
+    <styled-validation-message
+      [form]="form"
+      inputName="cost"
+      [inputError]="['min']"
+      [show]="error"
+    >
+      Вы уверены, что за это задание не положено вознаграждение? Тогда отметьте
+      его как бесплатное
+    </styled-validation-message>
+
+    <styled-checkbox (onValueChange)="updateDueDate($event)">
+      Бесплатное задание
+    </styled-checkbox>
 
     <styled-checkbox (onValueChange)="updateDueDate($event)">
       Выполнить в срок

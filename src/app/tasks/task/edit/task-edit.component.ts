@@ -5,6 +5,7 @@ import {
   UntypedFormGroup,
   FormBuilder,
   Validators,
+  AbstractControl,
 } from '@angular/forms';
 import {
   ButtonComponent,
@@ -53,10 +54,17 @@ export class TaskEditComponent implements OnInit {
       category: [TaskCategory.Other, Validators.required],
       title: [null, Validators.required],
       desc: [null],
-      cost: [0, [Validators.required, Validators.pattern(/^\d+$/)]],
-      due_date: [null, [Validators.required, isValidDate, isBeforeToday]],
+      cost: [
+        null,
+        [Validators.required, Validators.pattern(/^\d+$/), Validators.min(1)],
+      ],
+      due_date: [null],
       period: [TaskPeriod.NoRepeat],
       allowMultipleCompletitions: [false],
+    });
+
+    this.form.valueChanges.subscribe(() => {
+      this.error = false;
     });
 
     // add validators
@@ -64,7 +72,17 @@ export class TaskEditComponent implements OnInit {
 
   public updateDueDate(value: boolean): void {
     this.hasDueDate = value;
-    // update due date control
+
+    if (value) {
+      this.form.controls.due_date.setValidators([
+        Validators.required,
+        isValidDate,
+        isBeforeToday,
+      ]);
+      this.form.controls.due_date.updateValueAndValidity({ emitEvent: false });
+    } else {
+      this.resetFormControl(this.form.controls.due_date);
+    }
   }
 
   public updatePeriod(value: boolean): void {
@@ -77,6 +95,22 @@ export class TaskEditComponent implements OnInit {
       console.log(this.form.value);
     } else {
       this.error = true;
+      console.log(
+        Object.keys(this.form.controls).filter(
+          (key: string) => this.form.get(key)?.status !== 'VALID'
+        )
+      );
     }
+  }
+
+  public resetError(): void {
+    this.error = false;
+  }
+
+  public resetFormControl(formControl: AbstractControl): void {
+    formControl.setValidators([]);
+    formControl.reset(null, { emitEvent: false });
+    formControl.markAsPristine();
+    formControl.markAsUntouched();
   }
 }

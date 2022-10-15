@@ -4,8 +4,13 @@
     class="styled-form-input"
     [type]="type"
     [attr.pattern]="pattern"
+    [attr.min]="type === 'number' && min ? min : null"
+    [attr.max]="type === 'number' && max ? max : null"
+    [attr.step]="type === 'number' && step ? step : null"
     [placeholder]="placeholder"
     formControlName="value"
     [class.error]="error"
+    (focus)="handleFocus()"
+    (keydown)="handleKeyDown()"
   />
 </div>

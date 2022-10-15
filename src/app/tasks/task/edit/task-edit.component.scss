@@ -1,5 +1,18 @@
 .task-edit {
+  background-color: var(--grey-light);
+  border-radius: var(--border-radius-xl);
+  margin: 0 auto;
+  padding: var(--padding);
+  width: var(--max-width);
+
   &-buttons {
+    margin-top: var(--padding-small);
     text-align: center;
+  }
+
+  &-comment {
+    color: var(--text-pale);
+    font-style: italic;
+    font-weight: normal;
   }
 }
