@@ -9,8 +9,11 @@ import {
   ReactiveFormsModule,
   ValidationErrors,
 } from '@angular/forms';
-import dayjs from 'dayjs';
 import { Subject, takeUntil } from 'rxjs';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+dayjs.extend(customParseFormat);
 
 @Component({
   standalone: true,
@@ -109,25 +112,30 @@ export class DateComponent implements ControlValueAccessor, OnInit {
   }
 
   private getValueFromForm(): string {
-    const day = this.form.controls.day.value;
-    const month = this.form.controls.month.value;
+    const VALID_DAY_LENGTH = 2;
+    const VALID_MONTH_LENGTH = 2;
+
+    const day = this.form.controls.day.value?.padStart(VALID_DAY_LENGTH, '0');
+    const month = this.form.controls.month.value?.padStart(
+      VALID_MONTH_LENGTH,
+      '0'
+    );
     const year = this.form.controls.year.value;
 
-    const date = `${year}/${month}/${day}`;
-    return dayjs(date).isValid() ? date : '';
+    return `${year}/${month}/${day}`;
   }
 
   private updateValue(value: string): void {
-    if (!value || !dayjs(value).isValid()) {
+    const date = dayjs(value);
+
+    if (!value || !date.isValid()) {
       this.resetValues();
       return;
     }
 
-    const parts = value.split('.');
-
-    const day = parts[0];
-    const month = parts[1];
-    const year = parts[2];
+    const day = date.format('DD');
+    const month = date.format('MM');
+    const year = date.format('YYYY');
 
     this.form.controls.day.setValue(day);
     this.form.controls.month.setValue(month);

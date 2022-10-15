@@ -40,24 +40,25 @@
     .styled-date-input {
       background-color: transparent;
       border: none;
-      font: normal 16px "Montserrat", sans-serif;
+      font: normal 16px "Noto Sans Mono", monospace;
 
       outline: none;
       text-align: center;
-      width: 34px;
+      width: 28px;
 
       &-year {
+        margin-left: 2px;
         text-align: left;
-        width: 68px;
+        width: 56px;
       }
     }
 
     .delimiter {
       display: block;
-      font-size: 16px;
-      margin: -1px 3px 0;
       color: var(--text);
+      font-size: 16px;
       opacity: 0.4;
+      padding: 0 3px;
     }
   }
 }

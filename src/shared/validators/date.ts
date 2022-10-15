@@ -5,6 +5,12 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 dayjs.extend(customParseFormat);
 
+const VALID_DATE_LENGTH = 10;
+
+const isDate = (value: string) => {
+  return !isNil(value) && value.length === VALID_DATE_LENGTH;
+};
+
 /**
  * Validator that requires controls to be a correct date
  * @static
@@ -13,7 +19,7 @@ dayjs.extend(customParseFormat);
 export function isValidDate(control: AbstractControl): ValidationErrors | null {
   const value = control.value;
 
-  if (isNil(value) || value.length === 0) {
+  if (!isDate(value)) {
     return null;
   }
 
@@ -34,7 +40,7 @@ export function isAfterToday(
 
   const today = dayjs();
 
-  if (isNil(value) || value.length === 0) {
+  if (!isDate(value)) {
     return null;
   }
 
@@ -53,7 +59,7 @@ export function isBeforeToday(
 
   const today = dayjs();
 
-  if (isNil(value) || value.length === 0) {
+  if (!isDate(value)) {
     return null;
   }
 
