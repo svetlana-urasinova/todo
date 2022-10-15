@@ -11,9 +11,7 @@ import {
 } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-
-dayjs.extend(customParseFormat);
+import isNil from 'lodash.isnil';
 
 @Component({
   standalone: true,
@@ -36,7 +34,7 @@ dayjs.extend(customParseFormat);
 })
 export class DateComponent implements ControlValueAccessor, OnInit {
   @Input()
-  public set value(value: string) {
+  public set value(value: string | null) {
     this._value = value;
 
     this.onChange(value);
@@ -53,7 +51,7 @@ export class DateComponent implements ControlValueAccessor, OnInit {
 
   public form: FormGroup;
 
-  private _value: string;
+  private _value: string | null;
 
   private component$: Subject<void> = new Subject();
 
@@ -89,7 +87,7 @@ export class DateComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  public writeValue(value: string): void {
+  public writeValue(value: string | null): void {
     this.updateValue(value);
   }
 
@@ -111,7 +109,7 @@ export class DateComponent implements ControlValueAccessor, OnInit {
     );
   }
 
-  private getValueFromForm(): string {
+  private getValueFromForm(): string | null {
     const VALID_DAY_LENGTH = 2;
     const VALID_MONTH_LENGTH = 2;
 
@@ -122,13 +120,15 @@ export class DateComponent implements ControlValueAccessor, OnInit {
     );
     const year = this.form.controls.year.value;
 
-    return `${year}/${month}/${day}`;
+    const date = `${year}/${month}/${day}`;
+
+    return dayjs(date).isValid() ? date : null;
   }
 
-  private updateValue(value: string): void {
+  private updateValue(value: string | null): void {
     const date = dayjs(value);
 
-    if (!value || !date.isValid()) {
+    if (isNil(value) || !date.isValid()) {
       this.resetValues();
       return;
     }

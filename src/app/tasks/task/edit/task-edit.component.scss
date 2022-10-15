@@ -6,6 +6,10 @@
   width: var(--max-width);
 
   &-buttons {
+    align-items: center;
+    display: flex;
+    gap: 6px;
+    justify-content: center;
     margin-top: var(--padding-small);
     text-align: center;
   }

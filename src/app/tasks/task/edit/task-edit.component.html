@@ -89,18 +89,23 @@
       inputName="cost"
       [inputError]="['min']"
       [show]="error"
+      *ngIf="!isFree"
     >
       Вы уверены, что за это задание не положено вознаграждение? Тогда отметьте
       его как бесплатное
     </styled-validation-message>
 
-    <styled-checkbox (onValueChange)="updateDueDate($event)">
-      Бесплатное задание
-    </styled-checkbox>
+    <ng-container [formGroup]="isFree">
+      <styled-checkbox formControlName="value">
+        Бесплатное задание
+      </styled-checkbox>
+    </ng-container>
 
-    <styled-checkbox (onValueChange)="updateDueDate($event)">
-      Срок выполнения
-    </styled-checkbox>
+    <ng-container [formGroup]="hasDueDate">
+      <styled-checkbox formControlName="value">
+        Срок выполнения
+      </styled-checkbox>
+    </ng-container>
     <ng-container *ngIf="hasDueDate">
       <styled-date
         formControlName="due_date"
@@ -137,10 +142,10 @@
       </styled-validation-message>
     </ng-container>
 
-    <styled-checkbox (onValueChange)="updatePeriod($event)">
-      Повторять
-    </styled-checkbox>
-    <ng-container *ngIf="isPeriodic">
+    <ng-container [formGroup]="isPeriodic">
+      <styled-checkbox formControlName="value"> Повторять </styled-checkbox>
+    </ng-container>
+    <ng-container *ngIf="isPeriodic.value.value">
       <select class="styled-form-input" formControlName="period">
         <option
           [value]="taskPeriodValue"
@@ -159,12 +164,62 @@
       </styled-validation-message>
     </ng-container>
 
-    <styled-checkbox formControlName="allowMultipleCompletitions">
+    <styled-checkbox formControlName="repeatable">
       Можно выполнить несколько раз
     </styled-checkbox>
+    <ng-container
+      [formGroup]="hasNoRepeatsLimit"
+      *ngIf="form.controls.repeatable.value"
+    >
+      <styled-checkbox formControlName="value">
+        Можно выполнять неограниченно
+      </styled-checkbox>
+    </ng-container>
+
+    <ng-container
+      *ngIf="
+        form.controls.repeatable.value &&
+        !hasNoRepeatsLimit.controls.value.value
+      "
+    >
+      <styled-input
+        formControlName="maxRepeats"
+        label="Сколько раз можно выполнить (всего)"
+        placeholder="5"
+        type="number"
+        min="1"
+        step="1"
+        [error]="
+          !!(
+            (error && form.controls.cost.errors) ||
+            form.controls.cost.errors?.pattern
+          )
+        "
+        (onFocus)="resetError()"
+      ></styled-input>
+      <styled-validation-message
+        [form]="form"
+        inputName="maxRepeats"
+        [inputError]="['required']"
+        [show]="error"
+      >
+        Укажите количество повторов!
+      </styled-validation-message>
+      <styled-validation-message
+        [form]="form"
+        inputName="maxRepeats"
+        [inputError]="['pattern', 'min']"
+      >
+        Некорректное количество повторов!
+      </styled-validation-message>
+    </ng-container>
 
     <div class="task-edit-buttons">
-      <styled-button color="blue" type="submit">Готово</styled-button>
+      <styled-button color="blue" type="submit">Сохранить</styled-button>
+      <styled-button color="yellow" (click)="resetForm()"
+        >Сбросить</styled-button
+      >
+      <styled-button color="red">Удалить задание</styled-button>
     </div>
   </form>
 </div>

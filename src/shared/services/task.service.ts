@@ -7,6 +7,7 @@ import {
   TaskResult,
   TaskResultDecision,
 } from '../types';
+import * as uuid from 'uuid';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -41,8 +42,8 @@ export class TaskService {
     },
     {
       id: '3',
-      title: 'Разобрать сушилку',
       category: TaskCategory.Laundry,
+      title: 'Разобрать сушилку',
       cost: 40,
       repeatable: false,
       period: TaskPeriod.Day,
@@ -50,9 +51,9 @@ export class TaskService {
     },
     {
       id: '4',
+      category: TaskCategory.Other,
       title: 'Помыть свою обувь',
       desc: 'Награда указана за одну пару обуви',
-      category: TaskCategory.Other,
       cost: 15,
       repeatable: true,
       maxRepeats: 0,
@@ -74,10 +75,10 @@ export class TaskService {
     },
     {
       id: '5',
+      category: TaskCategory.Garbage,
       title: 'Вынести мусор',
       desc: 'Награда указана за один пакет',
-      due_date: new Date('2023-01-01'),
-      category: TaskCategory.Garbage,
+      due_date: new Date('2023-02-04'),
       cost: 15,
       repeatable: true,
       maxRepeats: 3,
@@ -91,8 +92,8 @@ export class TaskService {
     },
     {
       id: '6',
-      title: 'Расчесать кошку',
       category: TaskCategory.Other,
+      title: 'Расчесать кошку',
       cost: 20,
       repeatable: false,
       due_date: new Date('2023-10-10 14:00:00'),
@@ -101,8 +102,8 @@ export class TaskService {
     },
     {
       id: '7',
-      title: 'Пропылесосить в детской',
       category: TaskCategory.Kidsroom,
+      title: 'Пропылесосить в детской',
       cost: 20,
       repeatable: false,
       period: TaskPeriod.Week,
@@ -119,6 +120,10 @@ export class TaskService {
     return this.tasks;
   }
 
+  public getTaskById(currentId: string): Task | null {
+    return this.tasks.find((task: Task) => task.id === currentId) || null;
+  }
+
   public getHowManyTimesTaskIsDone(currentTask: Task): number {
     if (!currentTask?.results) {
       return 0;
@@ -130,10 +135,13 @@ export class TaskService {
     );
   }
 
-  public saveTask(currentTask: Task): void {
+  public saveTask(task: Task): void {
+    const currentTask = task.id ? task : { ...task, id: uuid.v4() };
     this.tasks = [...this.tasks, currentTask];
 
     this.tasksWereUpdated$.next([...this.tasks]);
+
+    console.log(this.tasks);
   }
 
   public updateTask(currentTask: Task): void {
@@ -142,6 +150,8 @@ export class TaskService {
     });
 
     this.tasksWereUpdated$.next([...this.tasks]);
+
+    console.log(this.tasks);
   }
 
   public deleteTask(currentTask: Task): void {
