@@ -219,7 +219,9 @@
       <styled-button color="yellow" (click)="resetForm()"
         >Сбросить</styled-button
       >
-      <styled-button color="red">Удалить задание</styled-button>
+      <styled-button color="red" (click)="deleteTask()" *ngIf="editMode">
+        Удалить задание
+      </styled-button>
     </div>
   </form>
 </div>

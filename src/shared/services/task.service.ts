@@ -154,7 +154,9 @@ export class TaskService {
     console.log(this.tasks);
   }
 
-  public deleteTask(currentTask: Task): void {
-    this.tasks = this.tasks.filter((task: Task) => task.id !== currentTask.id);
+  public deleteTask(currentId: string): void {
+    this.tasks = this.tasks.filter((task: Task) => task.id !== currentId);
+
+    console.log(this.tasks);
   }
 }

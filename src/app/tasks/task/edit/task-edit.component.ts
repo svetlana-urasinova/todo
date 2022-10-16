@@ -235,6 +235,20 @@ export class TaskEditComponent implements OnInit {
   public resetForm(): void {
     if (this.currentTask) {
       this.form.patchValue(this.currentTask);
+    } else {
+      this.form.reset();
+    }
+  }
+
+  public deleteTask(): void {
+    if (
+      confirm(
+        'Вы действительно хотите удалить это задание? Это действие необратимо.'
+      )
+    ) {
+      if (this.currentTask?.id) {
+        this.taskService.deleteTask(this.currentTask.id);
+      }
     }
   }
 
