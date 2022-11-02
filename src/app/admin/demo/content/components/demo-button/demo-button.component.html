@@ -1,0 +1,66 @@
+<ad-demo-card title="Button" [inputs]="inputs">
+  <ad-demo-example title="Colored buttons">
+    <div class="demo-button-list">
+      <styled-button>Primary</styled-button>
+      <styled-button [color]="componentColors.Secondary"
+        >Secondary</styled-button
+      >
+      <styled-button [color]="componentColors.Red">Red</styled-button>
+      <styled-button [color]="componentColors.Yellow">Yellow</styled-button>
+      <styled-button [color]="componentColors.Green">Green</styled-button>
+      <styled-button [color]="componentColors.Blue">Blue</styled-button>
+      <styled-button [color]="componentColors.Grey">Grey</styled-button>
+      <styled-button [color]="componentColors.Dark">Dark</styled-button>
+      <styled-button [color]="componentColors.White">White</styled-button>
+      <styled-button [color]="componentColors.Clear">Clear</styled-button>
+    </div>
+  </ad-demo-example>
+  <ad-demo-example title="Disabled button">
+    <div class="demo-button-list">
+      <styled-button [isDisabled]="true"> Disabled button </styled-button>
+    </div>
+  </ad-demo-example>
+  <ad-demo-example title="Button with icon">
+    <div class="demo-button-list">
+      <styled-button
+        [color]="componentColors.Blue"
+        iconUrl="arrow-left.svg"
+        [iconType]="imgTypes.Svg"
+        iconColor="#b3e5fc"
+      >
+        Icon on the left
+      </styled-button>
+      <styled-button
+        iconUrl="star.svg"
+        [iconType]="imgTypes.Svg"
+        iconColor="#ffeb3b"
+        [iconHeight]="12"
+        [iconWidth]="12"
+      >
+        Icon of custom size
+      </styled-button>
+      <styled-button
+        [color]="componentColors.Secondary"
+        iconUrl="arrow-right.svg"
+        [iconType]="imgTypes.Svg"
+        iconColor="#b2dfdb"
+        [iconRight]="true"
+      >
+        Icon on the right
+      </styled-button>
+    </div>
+  </ad-demo-example>
+  <ad-demo-example title="Button without paddings">
+    <div class="demo-button-list">
+      <styled-button [color]="componentColors.Red" [noPadding]="true">
+        <styled-img
+          src="cross.svg"
+          type="svg"
+          height="20"
+          width="20"
+          [stretch]="true"
+        ></styled-img>
+      </styled-button>
+    </div>
+  </ad-demo-example>
+</ad-demo-card>

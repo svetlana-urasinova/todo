@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ComponentColor } from '../../types';
+import { ImgTypes } from 'src/shared/types/components/img-types';
+import { ComponentColors } from '../../types';
 import { ButtonTypes } from '../../types';
 import { ImgComponent } from '../img';
 
@@ -12,11 +13,14 @@ import { ImgComponent } from '../img';
   styleUrls: ['./button.component.scss'],
 })
 export class ButtonComponent {
-  @Input() public color: ComponentColor = ComponentColor.Primary;
+  @Input() public color: ComponentColors = ComponentColors.Primary;
   @Input() public type: ButtonTypes = ButtonTypes.Button;
-  @Input() public icon: string;
+  @Input() public iconUrl: string;
+  @Input() public iconColor: string;
+  @Input() public iconType: ImgTypes = ImgTypes.Default;
   @Input() public iconHeight = 20;
   @Input() public iconWidth = 20;
+  @Input() public iconRight = false;
   @Input() public noPadding = false;
   @Input() public isDisabled = false;
 }

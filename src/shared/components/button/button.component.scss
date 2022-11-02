@@ -1,6 +1,6 @@
 .styled-button {
   --text-color: var(--white);
-  background-color: var(--grey);
+  background-color: var(--primary);
   border: none;
   border-radius: var(--border-radius-m);
   box-shadow: var(--box-shadow);
@@ -20,13 +20,19 @@
   white-space: nowrap;
 
   &:hover {
-    background-color: var(--grey-dark);
+    background-color: var(--primary-dark);
   }
 
   &:disabled {
-    background-color: var(--grey);
+    background-color: var(--disabled);
     color: var(--white);
     cursor: default;
+  }
+
+  &-content {
+    align-items: center;
+    display: flex;
+    gap: 8px;
   }
 
   &.primary:not(:disabled) {
@@ -83,18 +89,36 @@
     }
   }
 
+  &.grey:not(:disabled) {
+    background-color: var(--dark-40);
+
+    &:hover,
+    &:focus {
+      background-color: var(--dark-60);
+    }
+  }
+
+  &.dark:not(:disabled) {
+    background-color: var(--dark-80);
+
+    &:hover,
+    &:focus {
+      background-color: var(--dark);
+    }
+  }
+
   &.white:not(:disabled) {
     background-color: var(--white);
+    border: 1px solid var(--grey-20);
     color: var(--text);
 
     &:hover,
     &:focus {
-      background-color: var(--grey-light);
+      background-color: var(--grey-10);
     }
   }
 
   &.clear {
-    font-size: 16px;
     font-weight: 600;
 
     &:not(:disabled) {
@@ -105,16 +129,22 @@
 
       &:hover,
       &:focus {
-        --text-color: var(--text-dark);
+        background-color: var(--grey-10);
       }
     }
   }
 
   &.no-padding {
+    border-radius: var(--border-radius-s);
+    height: fit-content;
     padding: 0;
   }
 
   &-icon {
     pointer-events: none;
+
+    &.icon-right {
+      order: 1;
+    }
   }
 }

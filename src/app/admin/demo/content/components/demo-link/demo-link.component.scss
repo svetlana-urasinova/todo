@@ -1,0 +1,16 @@
+.demo-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &.horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  &.on-dark {
+    background-color: var(--dark-80);
+    border-radius: var(--border-radius-m);
+    padding: var(--padding-small);
+  }
+}

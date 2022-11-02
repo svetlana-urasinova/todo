@@ -16,14 +16,18 @@
     </div>
     <styled-button
       color="green"
-      icon="{{ iconBaseUrl }}check_white.svg"
+      iconUrl="check.svg"
+      iconType="svg"
+      iconColor="#ffffff"
       [isDisabled]="status?.value === taskStatus.Approved.value"
       (click)="review(taskResultDecision.Approved)"
     >
     </styled-button>
     <styled-button
       color="red"
-      icon="{{ iconBaseUrl }}cross_white.svg"
+      iconUrl="cross.svg"
+      iconType="svg"
+      iconColor="#ffffff"
       [isDisabled]="status?.value === taskStatus.Rejected.value"
       (click)="review(taskResultDecision.Rejected)"
     >

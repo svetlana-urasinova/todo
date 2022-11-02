@@ -1,0 +1,24 @@
+<ad-demo-card title="Image" [inputs]="inputs">
+  <ad-demo-example title="Default">
+    <styled-img src="http://www.spacefugu.ru/index/img/alpaca.gif"></styled-img>
+  </ad-demo-example>
+  <ad-demo-example title="Icon">
+    <styled-img
+      src="gadget.png"
+      type="icon"
+      [stretch]="true"
+      [height]="200"
+      [width]="200"
+    ></styled-img>
+  </ad-demo-example>
+  <ad-demo-example title="Svg">
+    <div class="img-container-svg">
+      <styled-img src="star.svg" type="svg" [stretch]="true"></styled-img>
+    </div>
+  </ad-demo-example>
+  <ad-demo-example title="Broken with alt">
+    <div class="img-container">
+      <styled-img src="http://" alt="This image is broken"></styled-img>
+    </div>
+  </ad-demo-example>
+</ad-demo-card>

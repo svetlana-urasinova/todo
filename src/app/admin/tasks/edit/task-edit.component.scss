@@ -1,0 +1,22 @@
+.task-edit {
+  background-color: var(--grey-10);
+  border-radius: var(--border-radius-xl);
+  margin: 0 auto;
+  padding: var(--padding);
+  width: var(--max-width);
+
+  &-buttons {
+    align-items: center;
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-top: var(--padding-small);
+    text-align: center;
+  }
+
+  &-comment {
+    color: var(--text-pale);
+    font-style: italic;
+    font-weight: normal;
+  }
+}

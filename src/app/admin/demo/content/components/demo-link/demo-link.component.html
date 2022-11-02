@@ -1,0 +1,52 @@
+<ad-demo-card title="Link" [inputs]="inputs">
+  <ad-demo-example title="Default links">
+    <div class="demo-links">
+      <styled-link>Default link</styled-link>
+      <styled-link [targetBlank]="true">
+        Will be opened in a new tab
+      </styled-link>
+      <styled-link [noUnderline]="true"> Link without undeline </styled-link>
+      <styled-link [isDisabled]="true"> Disabled link </styled-link>
+    </div>
+  </ad-demo-example>
+  <ad-demo-example title="Default link on dark">
+    <div class="demo-links on-dark">
+      <styled-link [onDark]="true">This link is white</styled-link>
+    </div>
+  </ad-demo-example>
+  <ad-demo-example title="Button links">
+    <div class="demo-links horizontal">
+      <styled-link [isButton]="true"> Primary </styled-link>
+      <styled-link [isButton]="true" [color]="componentColors.Secondary">
+        Secondary
+      </styled-link>
+      <styled-link [isButton]="true" [color]="componentColors.Red">
+        Red
+      </styled-link>
+      <styled-link [isButton]="true" [color]="componentColors.Yellow">
+        Yellow
+      </styled-link>
+      <styled-link [isButton]="true" [color]="componentColors.Green">
+        Green
+      </styled-link>
+      <styled-link [isButton]="true" [color]="componentColors.Blue">
+        Blue
+      </styled-link>
+      <styled-link [isButton]="true" [color]="componentColors.Grey">
+        Grey
+      </styled-link>
+      <styled-link [isButton]="true" [color]="componentColors.Dark">
+        Dark
+      </styled-link>
+      <styled-link [isButton]="true" [color]="componentColors.White">
+        White
+      </styled-link>
+      <styled-link [isButton]="true" [color]="componentColors.Clear">
+        Clear
+      </styled-link>
+      <styled-link [isButton]="true" [isDisabled]="true">
+        Disabled
+      </styled-link>
+    </div>
+  </ad-demo-example>
+</ad-demo-card>

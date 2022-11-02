@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { ImgComponent } from 'src/shared/components';
 import { DateOrTimePipe, TimePipe } from 'src/shared/pipes';
 import { AuthService, NavigationService } from 'src/shared/services';
 import { Task, TaskResult, TaskStatus } from 'src/shared/types';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, TimePipe, DateOrTimePipe],
+  imports: [CommonModule, ImgComponent, TimePipe, DateOrTimePipe],
   selector: 'task-sidebar',
   templateUrl: './task-sidebar.component.html',
   styleUrls: ['./task-sidebar.component.scss'],

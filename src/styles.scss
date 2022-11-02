@@ -1,48 +1,65 @@
 @import url("https://fonts.googleapis.com/css2?family=Comforter+Brush&family=Underdog&family=Montserrat:wght@100;400;500;600;700&family=Noto+Sans+Mono&display=swap");
 @import "./assets/styles/form.scss";
+@import "./assets/styles/table.scss";
+
+$grey: #333333;
+$primary: #9967e0;
+$secondary: #03b591;
+$dark: #1d0022;
+$red: #f44336;
+$yellow: #fbc02d;
+$green: #4caf50;
+$blue: #1976d2;
 
 :root {
   --black: #000000;
   --white: #ffffff;
-  --background-lighter: #f5f5f5;
-  --background-darker: #efefef;
-  --text: #555555;
-  --text-dark: #333333;
-  --text-light: #777777;
-  --text-pale: #aaaaaa;
-  --grey: #dddddd;
-  --grey-dark: #c3c0bb;
-  --grey-light: #eeeeee;
+
+  --dark: #{$dark};
+  --dark-80: #{mix(white, $dark, 20%)};
+  --dark-60: #{mix(white, $dark, 40%)};
+  --dark-40: #{mix(white, $dark, 60%)};
+  --dark-20: #{mix(white, $dark, 80%)};
+
+  --grey: #{$grey};
+  --grey-80: #{mix(white, $grey, 20%)};
+  --grey-60: #{mix(white, $grey, 40%)};
+  --grey-40: #{mix(white, $grey, 60%)};
+  --grey-30: #{mix(white, $grey, 70%)};
+  --grey-20: #{mix(white, $grey, 80%)};
+  --grey-10: #{mix(white, $grey, 90%)};
+  --grey-5: #{mix(white, $grey, 95%)};
+
+  --text: var(--grey-80);
+  --text-dark: var(--grey);
+  --text-light: var(--grey-60);
+  --text-pale: var(--grey-40);
+
+  --disabled: var(--grey-20);
   --shadow: rgba(0, 0, 0, 0.3);
 
-  // --primary: #376d3f;
-  // --primary-dark: #29512f;
-  // --primary-light: #d5eae0;
-  // --secondary: #dcb450;
-  // --secondary-dark: #daaf44;
-  // --secondary-light: #e0d19c;
-  --primary: #7400e0;
-  --primary-dark: #5f00b8;
-  --primary-light: #890aff;
-  --secondary: #c2ff33;
-  --secondary-dark: #abf500;
-  --secondary-light: #daff85;
-  --danger: #f44336;
-  --danger-dark: #e53935;
-  --danger-light: #ef5350;
-  --success: #4caf50;
-  --success-dark: #43a047;
-  --success-light: #66bb6a;
-  --warning: #fbc02d;
-  --warning-dark: #f9a825;
-  --warning-light: #fdd835;
-  --info: #1976d2;
-  --info-dark: #1565c0;
-  --info-light: #1e88e5;
+  --primary: #{$primary};
+  --primary-dark: #{mix(black, $primary, 10%)};
+  --primary-light: #{mix(white, $primary, 20%)};
+  --secondary: #{$secondary};
+  --secondary-dark: #{mix(black, $secondary, 10%)};
+  --secondary-light: #{mix(white, $secondary, 20%)};
+  --danger: #{$red};
+  --danger-dark: #{mix(black, $red, 5%)};
+  --danger-light: #{mix(white, $red, 20%)};
+  --warning: #{$yellow};
+  --warning-dark: #{mix(black, $yellow, 5%)};
+  --warning-light: #{mix(white, $yellow, 20%)};
+  --success: #{green};
+  --success-dark: #{mix(black, $green, 5%)};
+  --success-light: #{mix(white, $green, 20%)};
+  --info: #{$blue};
+  --info-dark: #{mix(black, $blue, 10%)};
+  --info-light: #{mix(white, $blue, 20%)};
 
   --box-shadow-basic: 0 2px 5px var(--shadow);
   --box-shadow-light: 0px 8px 24px var(--shadow);
-  --border-basic: 1px solid var(--grey-dark);
+  --border-basic: 1px solid var(--grey-30);
   --transition-basic: all 0.2s ease-in-out;
 
   --border-radius-s: 4px;
@@ -91,18 +108,67 @@ body {
   }
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text);
+  font-family: inherit;
+  line-height: 1.25;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 0 0 24px;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+h4 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+h5 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+h6 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
 img {
   display: block;
 }
 
 a {
-  color: var(--primary);
+  color: var(--secondary);
   cursor: pointer;
   font-weight: 600;
   text-decoration: underline;
 
   &:hover,
   &:focus {
-    color: var(--primary-dark);
+    color: var(--secondary-dark);
   }
 }

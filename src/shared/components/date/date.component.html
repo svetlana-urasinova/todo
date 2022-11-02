@@ -1,4 +1,4 @@
-<div class="styled-date-group" [formGroup]="form">
+<div class="styled-date-group" [formGroup]="form" [class.disabled]="isDisabled">
   <label class="styled-date-label" *ngIf="label">
     {{ label }}
   </label>

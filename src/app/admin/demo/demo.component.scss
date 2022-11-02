@@ -1,0 +1,11 @@
+.demo {
+  &-content {
+    flex: auto;
+    padding: var(--padding-small);
+
+    &-container {
+      display: flex;
+      width: 100%;
+    }
+  }
+}

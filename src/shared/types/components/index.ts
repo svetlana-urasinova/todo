@@ -1,2 +1,2 @@
 export * from './button-types';
-export * from './component-color';
+export * from './component-colors';

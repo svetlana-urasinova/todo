@@ -4,10 +4,16 @@ import { TasksComponent } from './tasks/tasks.component';
 
 const routes: Routes = [
   { path: '', component: TasksComponent },
+  // {
+  //   path: 'task',
+  //   loadChildren: () =>
+  //     import('./tasks/task-routes').then((mod) => mod.TASKS_ROUTES),
+  // },
   {
-    path: 'task',
+    path: 'admin',
+    title: 'Панель администратора',
     loadChildren: () =>
-      import('./tasks/task/task-routes').then((mod) => mod.TASK_ROUTES),
+      import('./admin/admin-routes').then((mod) => mod.ADMIN_ROUTES),
   },
 ];
 

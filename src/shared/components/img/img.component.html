@@ -1,9 +1,22 @@
 <div
   class="styled-img-container"
-  [ngStyle]="{
-    height: height ? height + 'px' : '100%',
-    width: width ? width + 'px' : '100%'
-  }"
+  [ngStyle]="
+    (stretch && {
+      height: height ? height + 'px' : '100%',
+      width: width ? width + 'px' : '100%'
+    }) ||
+    null
+  "
+  [ngSwitch]="type"
 >
-  <img class="styled-img" [src]="src" [attr.alt]="alt || null" />
+  <svg class="styled-img" *ngSwitchCase="imgTypes.Svg">
+    <title *ngIf="alt">{{ alt }}</title>
+    <use attr.xlink:href="{{ iconBaseUrl }}svg/{{ src }}#{{ iconFilename }}" />
+  </svg>
+  <img
+    class="styled-img"
+    [src]="type === imgTypes.Icon ? iconBaseUrl + src : src"
+    [attr.alt]="alt || null"
+    *ngSwitchDefault
+  />
 </div>

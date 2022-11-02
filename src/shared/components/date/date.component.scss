@@ -2,7 +2,6 @@
   background-color: var(--white);
   border: var(--border-basic);
   border-radius: var(--border-radius-m);
-  color: var(--text);
   display: flex;
   justify-content: flex-start;
   min-width: 120px;
@@ -11,19 +10,23 @@
   width: 100%;
 
   &:hover {
-    border-color: var(--secondary-light);
+    border-color: var(--grey-40);
   }
 
-  &:focus {
-    border-color: var(--secondary);
+  &:focus-within {
+    border-color: var(--primary);
   }
 
   &.error {
     border-color: var(--danger);
+
+    .styled-date-input {
+      color: var(--danger-dark);
+    }
   }
 
   &::placeholder {
-    color: var(--grey-dark);
+    color: var(--grey-40);
   }
 
   &-group {
@@ -31,6 +34,17 @@
     flex-direction: column;
     padding: 12px 0;
     width: 100%;
+
+    &.disabled {
+      .styled-date {
+        border-color: var(--disabled);
+        pointer-events: none;
+
+        &-input {
+          color: var(--disabled);
+        }
+      }
+    }
 
     .styled-date-label {
       font-weight: 500;
@@ -40,6 +54,7 @@
     .styled-date-input {
       background-color: transparent;
       border: none;
+      color: var(--text);
       font: normal 16px "Noto Sans Mono", monospace;
 
       outline: none;

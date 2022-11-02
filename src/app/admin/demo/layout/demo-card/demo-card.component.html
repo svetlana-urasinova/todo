@@ -1,0 +1,38 @@
+<div class="demo-card">
+  <h2 *ngIf="title">{{ title }}</h2>
+  <div class="demo-card-examples">
+    <ng-content></ng-content>
+  </div>
+  <ng-container *ngIf="inputs.length > 0">
+    <h3>Inputs</h3>
+    <table class="styled-table">
+      <tr class="styled-table-row">
+        <th class="styled-table-header">Name</th>
+        <th class="styled-table-header">Type</th>
+        <th class="styled-table-header">Default value</th>
+        <th class="styled-table-header">Description</th>
+      </tr>
+      <tr class="styled-table-row" *ngFor="let input of inputs">
+        <td class="styled-table-cell">{{ input.name }}</td>
+        <td class="styled-table-cell">{{ input.type }}</td>
+        <td class="styled-table-cell">{{ input.defaultValue }}</td>
+        <td class="styled-table-cell">{{ input.description }}</td>
+      </tr>
+    </table>
+  </ng-container>
+  <ng-container *ngIf="outputs.length > 0">
+    <h3>Outputs</h3>
+    <table class="styled-table">
+      <tr class="styled-table-row">
+        <th class="styled-table-header">Name</th>
+        <th class="styled-table-header">Type</th>
+        <th class="styled-table-header">Description</th>
+      </tr>
+      <tr class="styled-table-row" *ngFor="let output of outputs">
+        <td class="styled-table-cell">{{ output.name }}</td>
+        <td class="styled-table-cell">{{ output.type }}</td>
+        <td class="styled-table-cell">{{ output.description }}</td>
+      </tr>
+    </table>
+  </ng-container>
+</div>

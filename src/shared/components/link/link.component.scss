@@ -1,36 +1,31 @@
 .styled-link {
-  &.text {
-    color: var(--text);
-
-    &:hover,
-    &:focus {
-      color: var(--text-darker);
-    }
-  }
-
   &.on-dark {
     color: var(--white);
 
     &:hover,
     &:focus {
-      color: var(--grey-light);
+      color: var(--grey-10);
     }
   }
 
-  &.clear {
+  &.no-underline {
     text-decoration: none;
+  }
+
+  &.disabled {
+    color: var(--disabled);
+    pointer-events: none;
   }
 
   &.button {
     --text-color: var(--white);
-    background-color: var(--grey);
+    background-color: var(--grey-40);
     border: none;
     border-radius: var(--border-radius-m);
     box-shadow: var(--box-shadow);
     color: var(--text-color);
     cursor: pointer;
     display: inline-block;
-    font-size: 15px;
     font-weight: 500;
     outline: none;
     padding: 12px 20px;
@@ -45,7 +40,7 @@
     }
 
     &.disabled {
-      background-color: var(--grey);
+      background-color: var(--disabled);
       color: var(--white);
       cursor: default;
     }
@@ -77,6 +72,15 @@
       }
     }
 
+    &.yellow:not(.disabled) {
+      background-color: var(--warning);
+
+      &:hover,
+      &:focus {
+        background-color: var(--warning-dark);
+      }
+    }
+
     &.green:not(.disabled) {
       background-color: var(--success);
 
@@ -86,8 +90,45 @@
       }
     }
 
+    &.blue:not(.disabled) {
+      background-color: var(--info);
+
+      &:hover,
+      &:focus {
+        background-color: var(--info-dark);
+      }
+    }
+
+    &.grey:not(.disabled) {
+      background-color: var(--dark-40);
+
+      &:hover,
+      &:focus {
+        background-color: var(--dark-60);
+      }
+    }
+
+    &.dark:not(.disabled) {
+      background-color: var(--dark-80);
+
+      &:hover,
+      &:focus {
+        background-color: var(--dark);
+      }
+    }
+
+    &.white:not(.disabled) {
+      background-color: var(--white);
+      border: 1px solid var(--grey-20);
+      color: var(--text);
+
+      &:hover,
+      &:focus {
+        background-color: var(--grey-10);
+      }
+    }
+
     &.clear {
-      font-size: 16px;
       font-weight: 600;
 
       &:not(.disabled) {
@@ -98,7 +139,7 @@
 
         &:hover,
         &:focus {
-          --text-color: var(--text-dark);
+          background-color: var(--grey-10);
         }
       }
     }

@@ -1,0 +1,9 @@
+<div class="demo-sidebar">
+  <styled-link
+    [isRouterLink]="true"
+    [href]="item.url"
+    *ngFor="let item of items"
+  >
+    {{ item.title }}
+  </styled-link>
+</div>

@@ -1,0 +1,59 @@
+<ad-demo-card
+  title="Input"
+  [inputs]="inputs"
+  [outputs]="outputs"
+  [formGroup]="form"
+>
+  <ad-demo-example title="Default">
+    <styled-input formControlName="default"></styled-input>
+  </ad-demo-example>
+  <ad-demo-example title="With label">
+    <styled-input
+      [type]="inputTypes.Tel"
+      label="Enter your phone number"
+      formControlName="with_label"
+    ></styled-input>
+  </ad-demo-example>
+  <ad-demo-example title="With placeholder">
+    <styled-input
+      placeholder="This is a placeholder"
+      formControlName="with_placeholder"
+    ></styled-input>
+  </ad-demo-example>
+  <ad-demo-example title="Disabled">
+    <styled-input formControlName="disabled"></styled-input>
+  </ad-demo-example>
+  <ad-demo-example title="Error">
+    <styled-input [error]="true" formControlName="error"></styled-input>
+  </ad-demo-example>
+  <ad-demo-example title="Type=text">
+    <styled-input formControlName="filled_text"></styled-input>
+  </ad-demo-example>
+  <ad-demo-example title="Type=tel">
+    <styled-input
+      [type]="inputTypes.Tel"
+      formControlName="filled_tel"
+    ></styled-input>
+  </ad-demo-example>
+  <ad-demo-example title="Type=number">
+    <styled-input
+      [type]="inputTypes.Number"
+      [min]="0"
+      [max]="100"
+      [step]="10"
+      formControlName="filled_number"
+    ></styled-input>
+  </ad-demo-example>
+  <ad-demo-example title="Type=email">
+    <styled-input
+      [type]="inputTypes.Email"
+      formControlName="filled_email"
+    ></styled-input>
+  </ad-demo-example>
+  <ad-demo-example title="Type=password">
+    <styled-input
+      [type]="inputTypes.Password"
+      formControlName="filled_password"
+    ></styled-input>
+  </ad-demo-example>
+</ad-demo-card>

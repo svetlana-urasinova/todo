@@ -5,7 +5,12 @@
 >
   <div class="task-sidebar-cost">
     <div class="task-sidebar-icon-container">
-      <img class="task-sidebar-icon" src="{{ iconBaseUrl }}game.svg" />
+      <styled-img
+        class="task-sidebar-icon"
+        src="clock.svg"
+        type="svg"
+        [stretch]="true"
+      ></styled-img>
     </div>
     {{ task.cost || 0 | time }}
   </div>
@@ -15,7 +20,12 @@
     *ngIf="!isAdmin && status.value !== taskStatus.Default.value"
   >
     <div class="task-sidebar-icon-container">
-      <img class="task-sidebar-icon" src="{{ iconBaseUrl }}{{ status.icon }}" />
+      <styled-img
+        class="task-sidebar-icon"
+        [src]="status.icon"
+        type="svg"
+        [stretch]="true"
+      ></styled-img>
     </div>
     {{ status.text }}
   </div>
@@ -25,7 +35,12 @@
     *ngIf="task.repeatable && result?.repeats > 0"
   >
     <div class="task-sidebar-icon-container">
-      <img class="task-sidebar-icon" src="{{ iconBaseUrl }}checklist.svg" />
+      <styled-img
+        class="task-sidebar-icon"
+        src="checklist.svg"
+        type="svg"
+        [stretch]="true"
+      ></styled-img>
     </div>
     {{ result.repeats }}
     <ng-container *ngIf="task.maxRepeats > 1">
@@ -39,7 +54,12 @@
     *ngIf="task.due_date"
   >
     <div class="task-sidebar-icon-container">
-      <img class="task-sidebar-icon" src="{{ iconBaseUrl }}calendar.svg" />
+      <styled-img
+        class="task-sidebar-icon"
+        src="calendar.svg"
+        type="svg"
+        [stretch]="true"
+      ></styled-img>
     </div>
     {{ task.due_date | date_or_time }}
   </div>

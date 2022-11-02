@@ -5,12 +5,18 @@
   [class.no-padding]="noPadding"
   [disabled]="isDisabled || null"
 >
-  <styled-img
-    class="styled-button-icon"
-    [src]="icon"
-    [height]="iconHeight"
-    [width]="iconWidth"
-    *ngIf="icon"
-  ></styled-img>
-  <ng-content></ng-content>
+  <div class="styled-button-content">
+    <styled-img
+      class="styled-button-icon"
+      [class.icon-right]="iconRight"
+      [ngStyle]="iconColor && { color: iconColor }"
+      [src]="iconUrl"
+      [type]="iconType"
+      [height]="iconHeight"
+      [width]="iconWidth"
+      [stretch]="true"
+      *ngIf="iconUrl"
+    ></styled-img>
+    <ng-content></ng-content>
+  </div>
 </button>
