@@ -1,7 +1,18 @@
-<div class="task-edit">
-  <h2 *ngIf="!editMode">Новое задание</h2>
-  <h2 *ngIf="editMode">Редактировать задание</h2>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+<div class="task-edit" [ngSwitch]="true">
+  <h2 *ngSwitchCase="!editMode">Новое задание</h2>
+  <h2 *ngSwitchCase="editMode && !!currentTask">Редактировать задание</h2>
+  <styled-error *ngSwitchDefault>
+    <p>Задание не найдено!</p>
+    <p>
+      Чтобы вернуться на главную страницу, нажмите
+      <styled-link [onDark]="true">сюда</styled-link>.
+    </p>
+  </styled-error>
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    *ngIf="currentTask || !editMode"
+  >
     <div class="styled-form-group">
       <label for="task-category" class="styled-form-label"> Категория </label>
       <select
@@ -215,7 +226,9 @@
     </ng-container>
 
     <div class="task-edit-buttons">
-      <styled-button color="blue" type="submit">Сохранить</styled-button>
+      <styled-button color="blue" type="submit" [isDisabled]="!form.valid"
+        >Сохранить</styled-button
+      >
       <styled-button color="yellow" (click)="resetForm()"
         >Сбросить</styled-button
       >

@@ -8,31 +8,36 @@ import {
   AbstractControl,
   ValidatorFn,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import {
   ButtonComponent,
   CheckboxComponent,
   DateComponent,
+  ErrorComponent,
   InputComponent,
+  LinkComponent,
   ValidationMessageComponent,
 } from 'src/shared/components';
 import { CategoryPipe, PeriodPipe } from 'src/shared/pipes';
-import { TaskService } from 'src/shared/services';
 import { Task, TaskCategory, TaskPeriod } from 'src/shared/types';
 import { isBeforeToday, isValidDate } from 'src/shared/validators';
 import { isEnum } from 'src/shared/validators/enum';
 import isNil from 'lodash.isnil';
+import { map, mergeMap, of, take, tap } from 'rxjs';
+import { TaskService } from 'src/shared/services';
 
 @Component({
   standalone: true,
   imports: [
     ButtonComponent,
+    CheckboxComponent,
+    DateComponent,
+    ErrorComponent,
+    InputComponent,
+    LinkComponent,
     CommonModule,
     ReactiveFormsModule,
     ValidationMessageComponent,
-    CheckboxComponent,
-    DateComponent,
-    InputComponent,
     PeriodPipe,
     CategoryPipe,
   ],
@@ -59,8 +64,8 @@ export class TaskEditComponent implements OnInit {
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly taskService: TaskService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly taskService: TaskService
   ) {}
 
   public ngOnInit(): void {
@@ -127,10 +132,21 @@ export class TaskEditComponent implements OnInit {
       }
     );
 
-    this.route.params.subscribe((params) => {
-      if (!isNil(params.id)) {
-        this.editMode = true;
-        const currentTask = this.taskService.getTaskById(params.id);
+    this.route.params
+      .pipe(
+        map((params: Params) => params.id),
+        tap((id: string) => {
+          this.editMode = !!id;
+        }),
+        mergeMap((id: string) =>
+          id ? this.taskService.getTaskById(id).pipe(take(1)) : of(null)
+        )
+      )
+      .subscribe((currentTask: Task | null) => {
+        if (!this.editMode) {
+          return;
+        }
+
         if (currentTask) {
           this.currentTask = currentTask;
           this.form.patchValue(this.currentTask);
@@ -151,10 +167,7 @@ export class TaskEditComponent implements OnInit {
             value: currentTask.repeatable && currentTask.maxRepeats === 0,
           });
         }
-      } else {
-        this.editMode = false;
-      }
-    });
+      });
   }
 
   public makeTaskFree(value: boolean): void {
@@ -218,7 +231,7 @@ export class TaskEditComponent implements OnInit {
           results: [],
         });
       } else {
-        this.taskService.saveTask({
+        this.taskService.addTask({
           ...this.form.value,
           results: [],
         });
@@ -247,7 +260,7 @@ export class TaskEditComponent implements OnInit {
       )
     ) {
       if (this.currentTask?.id) {
-        this.taskService.deleteTask(this.currentTask.id);
+        this.taskService.deleteTask({ id: this.currentTask.id });
       }
     }
   }

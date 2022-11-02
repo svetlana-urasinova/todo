@@ -1,4 +1,5 @@
 import { Task, TasksState } from 'src/shared/types/tasks';
+import { mockTasks } from './mockTasks';
 import {
   TasksActions,
   ADD_TASK,
@@ -7,7 +8,7 @@ import {
 } from './tasks.actions';
 
 const initialState: TasksState = {
-  tasks: [],
+  tasks: mockTasks,
   currentTask: null,
 };
 
@@ -25,6 +26,7 @@ export function tasksReducer(
           task.id === action.payload.id ? { ...task, ...action.payload } : task
         ),
       };
+
     case DELETE_TASK:
       return {
         ...state,

@@ -20,7 +20,7 @@ export class UpdateTask implements Action {
 export class DeleteTask implements Action {
   readonly type = DELETE_TASK;
 
-  constructor(public payload: Task) {}
+  constructor(public payload: { id: string }) {}
 }
 
 export type TasksActions = AddTask | UpdateTask | DeleteTask;

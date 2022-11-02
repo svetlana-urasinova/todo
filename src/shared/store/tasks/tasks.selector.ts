@@ -13,9 +13,9 @@ export const getCurrentTask = createSelector(
   (state: TasksState): Task | null => state.currentTask
 );
 
-export const getIngredientById = (id: string) =>
+export const getTaskById = (id: string) =>
   createSelector(
-    getTasks,
-    (tasks: Task[]): Task | null =>
-      tasks.find((task: Task) => task.id === id) || null
+    getTasksState,
+    (state: TasksState) =>
+      state.tasks.find((task: Task) => task.id === id) || null
   );
