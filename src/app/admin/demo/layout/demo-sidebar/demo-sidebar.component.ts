@@ -16,13 +16,14 @@ export class DemoSidebarComponent implements OnInit {
 
   public ngOnInit(): void {
     const items = [
-      { title: 'Button', url: 'components/button' },
-      { title: 'Checkbox', url: 'components/checkbox' },
-      { title: 'Link', url: 'components/link' },
-      { title: 'Date', url: 'components/date' },
-      { title: 'Error', url: 'components/error' },
-      { title: 'Input', url: 'components/input' },
-      { title: 'Img', url: 'components/img' },
+      { title: 'Button', url: 'button' },
+      { title: 'Checkbox', url: 'checkbox' },
+      { title: 'Link', url: 'link' },
+      { title: 'Date', url: 'date' },
+      { title: 'Error', url: 'error' },
+      { title: 'Input', url: 'input' },
+      { title: 'Img', url: 'img' },
+      { title: 'Pipes', url: 'pipes' },
     ];
 
     this.items = orderBy(items, ['title'], ['asc']);

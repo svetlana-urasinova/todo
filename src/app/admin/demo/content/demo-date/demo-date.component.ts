@@ -6,8 +6,8 @@ import {
 } from '@angular/forms';
 import { DateComponent } from 'src/shared/components';
 import { DemoCardProp } from 'src/shared/types/demo-card-prop';
-import { DemoCardComponent } from '../../../layout/demo-card/demo-card.component';
-import { DemoExampleComponent } from '../../../layout/demo-example/demo-example.component';
+import { DemoCardComponent } from '../../layout/demo-card/demo-card.component';
+import { DemoExampleComponent } from '../../layout/demo-example/demo-example.component';
 
 @Component({
   standalone: true,

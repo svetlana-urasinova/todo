@@ -1,0 +1,58 @@
+<ad-demo-card title="Pipes">
+  <ad-demo-example title="Category pipe">
+    <p>Gets category's name by value</p>
+    <code
+      >TaskCategory.Kitchen | category =>
+      {{ taskCategory.Kitchen | category }}</code
+    >
+  </ad-demo-example>
+  <ad-demo-example title="Period pipe">
+    <p>Gets period's name by value</p>
+    <code>
+      TaskPeriod.Week | period =>
+      {{ taskPeriod.Week | period }}
+    </code>
+  </ad-demo-example>
+  <ad-demo-example title="Task status pipe">
+    <p>Gets task status' name by value</p>
+    <code>
+      TaskStatusValue.Approved | task_status =>
+      {{ taskStatus.Approved | task_status }}
+    </code>
+  </ad-demo-example>
+  <ad-demo-example title="DateOrTime pipe">
+    <p>Transforms Date object to readable date</p>
+    <div>
+      <code>
+        new Date('2022-09-01') | date_or_time =>
+        {{ date | date_or_time }}
+      </code>
+    </div>
+    <div>
+      <code>
+        new Date() | date_or_time =>
+        {{ dateWithTime | date_or_time }}
+      </code>
+    </div>
+  </ad-demo-example>
+  <ad-demo-example title="Time pipe">
+    <p>
+      Transforms time in minutes to time in readable format (hours and minutes)
+    </p>
+    <code>
+      107 | time =>
+      {{ 107 | time }}
+    </code>
+  </ad-demo-example>
+  <ad-demo-example title="Usernames pipe">
+    <p>Gets all names from array of users</p>
+    <code>
+      [<br />
+      &nbsp;&nbsp;&lcub; id: '1', name: 'Petyr', email: 'peter.baelish@test.com'
+      &rcub;,<br />
+      &nbsp;&nbsp;&lcub; id: '2', name: 'John', email: 'john.snow@test.com'
+      &rcub;<br />
+      ] | usernames => {{ users | usernames }}
+    </code>
+  </ad-demo-example>
+</ad-demo-card>
