@@ -106,18 +106,18 @@
       его как бесплатное
     </styled-validation-message>
 
-    <ng-container [formGroup]="isFree">
-      <styled-checkbox formControlName="value">
+    <ng-container>
+      <styled-checkbox formControlName="is_free">
         Бесплатное задание
       </styled-checkbox>
     </ng-container>
 
-    <ng-container [formGroup]="hasDueDate">
-      <styled-checkbox formControlName="value">
+    <ng-container>
+      <styled-checkbox formControlName="has_due_date">
         Срок выполнения
       </styled-checkbox>
     </ng-container>
-    <ng-container *ngIf="hasDueDate">
+    <ng-container *ngIf="form.value.has_due_date">
       <styled-date
         formControlName="due_date"
         [error]="
@@ -153,10 +153,12 @@
       </styled-validation-message>
     </ng-container>
 
-    <ng-container [formGroup]="isPeriodic">
-      <styled-checkbox formControlName="value"> Повторять </styled-checkbox>
+    <ng-container>
+      <styled-checkbox formControlName="is_periodic">
+        Повторять
+      </styled-checkbox>
     </ng-container>
-    <ng-container *ngIf="isPeriodic.value.value">
+    <ng-container *ngIf="form.value.is_periodic">
       <select class="styled-form-input" formControlName="period">
         <option
           [value]="taskPeriodValue"
@@ -178,20 +180,14 @@
     <styled-checkbox formControlName="repeatable">
       Можно выполнить несколько раз
     </styled-checkbox>
-    <ng-container
-      [formGroup]="hasNoRepeatsLimit"
-      *ngIf="form.controls.repeatable.value"
-    >
-      <styled-checkbox formControlName="value">
+    <ng-container *ngIf="form.value.repeatable">
+      <styled-checkbox formControlName="has_no_repeats_limit">
         Можно выполнять неограниченно
       </styled-checkbox>
     </ng-container>
 
     <ng-container
-      *ngIf="
-        form.controls.repeatable.value &&
-        !hasNoRepeatsLimit.controls.value.value
-      "
+      *ngIf="form.value.repeatable && !form.value.has_no_repeats_limit"
     >
       <styled-input
         formControlName="maxRepeats"

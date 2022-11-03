@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import {
   ReactiveFormsModule,
   UntypedFormGroup,
@@ -46,11 +47,9 @@ import { TaskService } from 'src/shared/services';
   styleUrls: ['./task-edit.component.scss'],
 })
 export class TaskEditComponent implements OnInit {
+  public component$: Subject<void> = new Subject();
+
   public form: UntypedFormGroup;
-  public isFree: UntypedFormGroup;
-  public hasDueDate: UntypedFormGroup;
-  public isPeriodic: UntypedFormGroup;
-  public hasNoRepeatsLimit: UntypedFormGroup;
 
   public editMode = false;
   public currentTask: Task | null = null;
@@ -84,42 +83,39 @@ export class TaskEditComponent implements OnInit {
       period: [TaskPeriod.NoRepeat],
       repeatable: [false],
       maxRepeats: [1, [Validators.pattern(/^\d+$/), Validators.min(0)]],
+      is_free: [false],
+      has_due_date: [false],
+      is_periodic: [false],
+      has_no_repeats_limit: [false],
     });
 
-    this.form.controls.repeatable.valueChanges.subscribe((value) => {
-      this.updateRepeats(value);
-    });
+    this.form.controls.repeatable.valueChanges
+      .pipe(takeUntil(this.component$))
+      .subscribe((value) => {
+        this.updateRepeats(value);
+      });
 
-    this.isFree = this.formBuilder.group({
-      value: [false],
-    });
+    this.form.controls.is_free.valueChanges
+      .pipe(takeUntil(this.component$))
+      .subscribe((value: boolean) => {
+        this.makeTaskFree(value);
+      });
 
-    this.isFree.controls.value.valueChanges.subscribe((value: boolean) => {
-      this.makeTaskFree(value);
-    });
+    this.form.controls.has_due_date.valueChanges
+      .pipe(takeUntil(this.component$))
+      .subscribe((value: boolean) => {
+        this.updateDueDate(value);
+      });
 
-    this.hasDueDate = this.formBuilder.group({
-      value: [false],
-    });
+    this.form.controls.is_periodic.valueChanges
+      .pipe(takeUntil(this.component$))
+      .subscribe((value: boolean) => {
+        this.updatePeriod(value);
+      });
 
-    this.hasDueDate.controls.value.valueChanges.subscribe((value: boolean) => {
-      this.updateDueDate(value);
-    });
-
-    this.isPeriodic = this.formBuilder.group({
-      value: [false],
-    });
-
-    this.isPeriodic.controls.value.valueChanges.subscribe((value: boolean) => {
-      this.updatePeriod(value);
-    });
-
-    this.hasNoRepeatsLimit = this.formBuilder.group({
-      value: [false],
-    });
-
-    this.hasNoRepeatsLimit.controls.value.valueChanges.subscribe(
-      (value: boolean) => {
+    this.form.controls.has_no_repeats_limit.valueChanges
+      .pipe(takeUntil(this.component$))
+      .subscribe((value: boolean) => {
         if (value) {
           this.form.patchValue({
             maxRepeats: 0,
@@ -129,8 +125,7 @@ export class TaskEditComponent implements OnInit {
             maxRepeats: 1,
           });
         }
-      }
-    );
+      });
 
     this.route.params
       .pipe(
@@ -149,23 +144,7 @@ export class TaskEditComponent implements OnInit {
 
         if (currentTask) {
           this.currentTask = currentTask;
-          this.form.patchValue(this.currentTask);
-
-          this.isFree.patchValue({
-            value: currentTask.cost === 0,
-          });
-
-          this.hasDueDate.patchValue({
-            value: !isNil(currentTask.due_date),
-          });
-
-          this.isPeriodic.patchValue({
-            value: currentTask.period !== TaskPeriod.NoRepeat,
-          });
-
-          this.hasNoRepeatsLimit.patchValue({
-            value: currentTask.repeatable && currentTask.maxRepeats === 0,
-          });
+          this.patchFormWithTask(currentTask);
         }
       });
   }
@@ -204,7 +183,12 @@ export class TaskEditComponent implements OnInit {
   public updatePeriod(value: boolean): void {
     const validators = [Validators.required, isEnum(TaskPeriod)];
 
-    this.toggleControl(this.form.controls.period, value, validators);
+    this.toggleControl(
+      this.form.controls.period,
+      value,
+      validators,
+      TaskPeriod.Day
+    );
   }
 
   public updateRepeats(value: boolean): void {
@@ -247,7 +231,7 @@ export class TaskEditComponent implements OnInit {
 
   public resetForm(): void {
     if (this.currentTask) {
-      this.form.patchValue(this.currentTask);
+      this.patchFormWithTask(this.currentTask);
     } else {
       this.form.reset();
     }
@@ -287,5 +271,16 @@ export class TaskEditComponent implements OnInit {
     formControl.reset(null, { emitEvent: false });
     formControl.markAsPristine();
     formControl.markAsUntouched();
+  }
+
+  private patchFormWithTask(currentTask: Task): void {
+    this.form.patchValue({
+      ...currentTask,
+      is_free: currentTask.cost === 0,
+      has_due_date: !isNil(currentTask.due_date),
+      is_periodic: currentTask.period !== TaskPeriod.NoRepeat,
+      has_no_repeat_limits:
+        currentTask.repeatable && currentTask.maxRepeats === 0,
+    });
   }
 }

@@ -1,10 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/shared/services';
-import { AppState } from 'src/shared/store';
-import { getTasks } from 'src/shared/store/tasks/tasks.selector';
+import { AuthService, TaskService } from 'src/shared/services';
 import { Task } from 'src/shared/types';
 import { TaskComponent } from './task/task.component';
 
@@ -23,11 +20,11 @@ export class TasksComponent implements OnInit {
 
   constructor(
     private readonly authService: AuthService,
-    private readonly store: Store<AppState>
+    private readonly taskService: TaskService
   ) {}
 
   ngOnInit(): void {
-    this.tasks = this.store.select(getTasks);
+    this.tasks = this.taskService.getAllTasks();
 
     this.userId = this.authService.getUserId();
     this.isAdmin = this.authService.checkIfAdmin();
